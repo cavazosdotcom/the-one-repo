@@ -50,6 +50,44 @@ function getCharacterData (searchVal) {
         .then(function(data){
         
         console.log(data);
+        // console.log(data.docs[0].dataset['_id'])
+        console.log(data.docs[0]._id)
+        console.log(data.docs[0].name)
+        console.log(data.docs[0].wikiUrl)
+        getCharacterQuotes(data.docs[0]._id)
+        
+        })
+        } else {
+            throw Error(response.statusText + ". We were not able to locate the character you searched for.");
+        }
+        })
+        .catch(function (Error) {
+            console.log(Error)
+            // renderModal(Error, "is-warning")
+    });;
+};
+
+function getCharacterQuotes(charData){
+    var requestUrl = `https://the-one-api.dev/v2/character/${charData}/quote`;
+    
+    var bearer = 'Bearer ' + lotrApiKey;
+    
+    fetch(requestUrl , {
+        method: 'GET',
+        headers: {
+            'Authorization': bearer,
+            'Content-Type': 'application/json'
+        }})
+        .then(function (response) {
+        if (response.ok) {
+            return response.json()
+        .then(function(data){
+        
+        console.log(data);
+        // console.log(data.docs[0].dataset['_id'])
+        console.log(data.docs)
+        console.log(data.docs.length)
+        console.log(data.docs[0].dialog)
         
         })
         } else {
@@ -60,7 +98,8 @@ function getCharacterData (searchVal) {
             console.log(Error)
             // renderModal(Error, "is-warning")
         });;
-    }
+}
+
 
 // Event listener for search form submission
 
