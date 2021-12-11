@@ -13,13 +13,14 @@ function formSubmit(event){
     event.preventDefault()
 
     if (searchInputEl.val()==="" && favoriteInputEl.val()==="") {
-        alert("Please enter a value")} 
-    else if(searchInputEl.val()===""){
+        console.log("Can you see this")
+        renderModal("Please enter a character name.", "is-info")
+        return
+    } else if(searchInputEl.val()===""){
         getCharacterData(favoriteInputEl.val())
 
     } else if (favoriteInputEl.val()==="") {
         getCharacterData(searchInputEl.val())
-        console.log()
     } else {
         getCharacterData(searchInputEl.val())
     }
@@ -58,12 +59,12 @@ function getCharacterData (searchVal) {
         
         })
         } else {
-            throw Error(response.statusText + ". We were not able to locate the character you searched for.");
+            
+            throw Error(response.status + ": We were not able to locate the character you searched for.");
         }
         })
         .catch(function (Error) {
-            console.log(Error)
-            // renderModal(Error, "is-warning")
+            renderModal(Error, "is-warning")
     });;
 };
 
@@ -91,15 +92,44 @@ function getCharacterQuotes(charData){
         
         })
         } else {
-            throw Error(response.statusText + ". We were not able to locate the character you searched for.");
+            console.log(Error)
+            throw Error(response.status + ": We were not able to locate the character's quotes.");
         }
         })
         .catch(function (Error) {
-            console.log(Error)
-            // renderModal(Error, "is-warning")
+            renderModal(Error, "is-warning")
         });;
 }
 
+// Modal handler
+function renderModal(errorResponse, severity) {
+    console.log
+    var modalType = ""
+    if(severity === "is-warning"){
+        modalType = "Warning"
+    } else {
+        modalType = "We need more information."
+    }
+
+    $('.modal-content').html(`
+                <article class="message ${severity}">
+                    <div class="message-header">
+                        <p>${modalType}</p>
+                        <button class="delete" aria-label="delete"></button>
+                    </div>
+                    <div class="message-body">
+                        ${errorResponse}
+                    </div>
+                </article>
+                `)
+    modalToggle()
+}
+
+function modalToggle(){
+    $('.modal').toggleClass('is-active')
+}
+
+$('.modal').on('click', modalToggle)
 
 // Event listener for search form submission
 
