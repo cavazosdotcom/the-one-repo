@@ -1,9 +1,0 @@
-
-
-
-@media screen and (min-width: 1024px){
-    .navbar-end {
-        justify-content: flex-end;
-        margin-right: 5px;
-    }
-}
