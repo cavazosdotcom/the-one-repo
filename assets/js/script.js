@@ -23,17 +23,19 @@ function formSubmit(event){
 
     } else if (favoriteInputEl.val()==="") {
         getCharacterData(searchInputEl.val())
+        favoriteInputEl.val("")
         console.log()
         // getGiphy(searchInputEl.val())
         
     } else {
         getCharacterData(searchInputEl.val())
+        favoriteInputEl.val("")
         // getGiphy(searchInputEl.val())
     }
     
     // clears out search input after form submission
     searchInputEl.val("")
-    favoriteInputEl.val("")
+    // favoriteInputEl.val("")
 }
 
 
@@ -63,7 +65,7 @@ function getCharacterData (searchVal) {
         saveFavoriteCharacter(data.docs[0].name)
         getGiphy(data.docs[0].name)
         console.log(data.docs[0].wikiUrl)
-        getCharacterQuotes(data.docs[0]._id)
+        getCharacterQuotes(data.docs[0])
         
         })
         } else {
@@ -77,7 +79,7 @@ function getCharacterData (searchVal) {
 };
 
 function getCharacterQuotes(charData){
-    var requestUrl = `https://the-one-api.dev/v2/character/${charData}/quote`;
+    var requestUrl = `https://the-one-api.dev/v2/character/${charData._id}/quote`;
     
     var bearer = 'Bearer ' + lotrApiKey;
     
@@ -91,12 +93,15 @@ function getCharacterQuotes(charData){
         if (response.ok) {
             return response.json()
         .then(function(data){
-        
-        console.log(data);
-        // console.log(data.docs[0].dataset['_id'])
-        console.log(data.docs)
-        console.log(data.docs.length)
-        console.log(data.docs[0].dialog)
+
+        renderCharacterData(charData , data)
+        // console.log(charData)
+        // console.log(charData._id)
+        // console.log(data);
+        // // console.log(data.docs[0].dataset['_id'])
+        // console.log(data.docs)
+        // console.log(data.docs.length)
+        // console.log(data.docs[0].dialog)
         
         })
         } else {
@@ -237,3 +242,63 @@ function renderFavorites(favorites) {
 }
 
 init()
+
+
+function renderCharacterData (charData, quoteData) {
+    console.log(charData)
+    console.log(quoteData)
+    var randomQuote =""
+
+    if (quoteData.total===0){
+        randomQuote = "This character has no known quotes in the movies."
+    } else {
+     randomQuote = quoteData.docs[getRandomIndex(quoteData.docs.length)].dialog
+    }
+
+    function getRandomIndex( length ) {
+        return Math.floor(Math.random()*length);
+    }
+    console.log(randomQuote)
+
+    var htmlTemplateString = `
+        <div class="box">
+          <article class="media">
+            <div class="media-left">
+              <figure class="image is-64x64">
+                <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
+              </figure>
+            </div>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong>${charData.name}</strong> <small>Character</small> <small>info </small>
+                  <br>
+                  ${randomQuote}
+                </p>
+              </div>
+              <nav class="level is-mobile">
+                <div class="level-left">
+                  <a class="level-item" aria-label="reply">
+                    <span class="icon is-small">
+                      <i class="fas fa-reply" aria-hidden="true"></i>
+                    </span>
+                  </a>
+                  <a class="level-item" aria-label="retweet">
+                    <span class="icon is-small">
+                      <i class="fas fa-retweet" aria-hidden="true"></i>
+                    </span>
+                  </a>
+                  <a class="level-item" aria-label="like">
+                    <span class="icon is-small">
+                      <i class="fas fa-heart" aria-hidden="true"></i>
+                    </span>
+                  </a>
+                </div>
+              </nav>
+            </div>
+          </article>
+        </div>
+        `;
+
+        $('.box').html(htmlTemplateString)
+}
