@@ -3,7 +3,7 @@ var searchInputEl = $('#search-value')
 var favoriteInputEl = $('#favorite-value')
 
 var lotrApiKey = "wamtzXv_h1XiQdZTQkoc"
-var giphyApiKey = "WoRs4YZR0DZF0sdkRHlcCVv8LJFz4LTz"
+var giphyApiKey = "Pv2YHiUAl6VaFAsN816cOhgxrE28iBKF"
 
 var favoriteCharacterList = []
 
@@ -19,11 +19,16 @@ function formSubmit(event){
         return
     } else if(searchInputEl.val()===""){
         getCharacterData(favoriteInputEl.val())
+        getGiphy(favoriteInputEl.val())
 
     } else if (favoriteInputEl.val()==="") {
         getCharacterData(searchInputEl.val())
+        console.log()
+        getGiphy(searchInputEl.val())
+        
     } else {
         getCharacterData(searchInputEl.val())
+        getGiphy(searchInputEl.val())
     }
     
     // clears out search input after form submission
@@ -133,6 +138,34 @@ function modalToggle(){
 }
 
 $('.modal').on('click', modalToggle)
+
+
+function getGiphy(searchVal) {
+
+    // TODO: create random number generator between 0 and 50? for ranNum variable
+    var ranNum = Math.floor(Math.random() * 9);
+
+    var requestUrl = `https://api.giphy.com/v1/gifs/search?api_key=${giphyApiKey}&q=${searchVal}&offset=${ranNum}`;
+   
+    fetch(requestUrl)
+        .then(function (response) {
+        if (response.ok) {
+            return response.json()
+        
+        .then(function (data) {
+            console.log(ranNum);
+            console.log(data.data[ranNum].images.looping.mp4);
+        });
+        } else {
+            throw Error(response.statusText + ". We were not able to locate the character you searched for.");
+        }
+        })
+        .catch(function (Error) {
+            console.log(Error)
+            // renderModal(Error, "is-warning")
+        });;
+}
+
 
 // Event listener for search form submission
 
