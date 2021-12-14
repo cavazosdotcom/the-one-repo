@@ -109,7 +109,8 @@ function getCharacterQuotes(charData){
 function getGiphy(searchVal) {
 
     // TODO: create random number generator between 0 and 50? for ranNum variable
-    var ranNum = 1
+    var ranNum = Math.floor(Math.random() * 9);
+
     var requestUrl = `https://api.giphy.com/v1/gifs/search?api_key=${giphyApiKey}&q=${searchVal}&offset=${ranNum}`;
    
     fetch(requestUrl)
@@ -118,7 +119,7 @@ function getGiphy(searchVal) {
             return response.json()
         
         .then(function (data) {
-            console.log(data);
+            console.log(ranNum);
             console.log(data.data[ranNum].images.looping.mp4);
         });
         } else {
