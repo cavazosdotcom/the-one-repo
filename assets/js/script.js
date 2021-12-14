@@ -3,7 +3,7 @@ var searchInputEl = $('#search-value')
 var favoriteInputEl = $('#favorite-value')
 
 var lotrApiKey = "wamtzXv_h1XiQdZTQkoc"
-var giphyApiKey = "WoRs4YZR0DZF0sdkRHlcCVv8LJFz4LTz"
+var giphyApiKey = "Pv2YHiUAl6VaFAsN816cOhgxrE28iBKF"
 
 
 
@@ -20,8 +20,12 @@ function formSubmit(event){
     } else if (favoriteInputEl.val()==="") {
         getCharacterData(searchInputEl.val())
         console.log()
+        getGiphy(searchInputEl.val())
+        // console.log(getGiphy);
     } else {
         getCharacterData(searchInputEl.val())
+        getGiphy(searchInputEl.val())
+        // console.log(getGiphy)
     }
     
     // clears out search input after form submission
@@ -99,6 +103,55 @@ function getCharacterQuotes(charData){
             // renderModal(Error, "is-warning")
         });;
 }
+
+
+
+function getGiphy(searchVal) {
+
+    // TODO: create random number generator between 0 and 50? for ranNum variable
+    var ranNum = 1
+    var requestUrl = `https://api.giphy.com/v1/gifs/search?api_key=${giphyApiKey}&q=${searchVal}&offset=${ranNum}`;
+   
+    fetch(requestUrl)
+        .then(function (response) {
+        if (response.ok) {
+            return response.json()
+        
+        .then(function (data) {
+            console.log(data);
+            console.log(data.data[ranNum].images.looping.mp4);
+        });
+        } else {
+            throw Error(response.statusText + ". We were not able to locate the character you searched for.");
+        }
+        })
+        .catch(function (Error) {
+            console.log(Error)
+            // renderModal(Error, "is-warning")
+        });;
+}
+
+        
+//   getGiphy(requestUrl);
+  
+// function getGiphy (searchVal) {
+
+//     var requestUrl = `api.giphy.com/v1/gifs/search?api_key=${giphyApiKey}=${searchVal}&offset=0`;
+    
+    
+    
+//    function getApi(requestUrl) {
+//   fetch(requestUrl)
+//     .then(function (response) {
+//       console.log(response);
+//       if (response.status === 200) {
+//         responseText.textContent = response.status;
+//       }
+//       return response.json();
+//   });
+// }
+
+// getApi(requestUrl);
 
 
 // Event listener for search form submission
