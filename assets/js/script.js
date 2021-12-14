@@ -5,6 +5,7 @@ var favoriteInputEl = $('#favorite-value')
 var lotrApiKey = "wamtzXv_h1XiQdZTQkoc"
 var giphyApiKey = "WoRs4YZR0DZF0sdkRHlcCVv8LJFz4LTz"
 
+var favoriteCharacterList = []
 
 
 // Form submission function
@@ -54,6 +55,8 @@ function getCharacterData (searchVal) {
         // console.log(data.docs[0].dataset['_id'])
         console.log(data.docs[0]._id)
         console.log(data.docs[0].name)
+        saveFavoriteCharacter(data.docs[0].name)
+
         console.log(data.docs[0].wikiUrl)
         getCharacterQuotes(data.docs[0]._id)
         
@@ -146,3 +149,68 @@ $(document).ready(function() {
   
     });
   });
+
+
+// Initial page load function to pull favorite characters from local storage
+function init() {
+
+    // This will parse the favorite character list array from local storage
+    favoriteCharacterList = JSON.parse(localStorage.getItem("favoriteCharacters"));
+    
+    // If local storage favorite character values do not exist; set it as a blank array
+    if (favoriteCharacterList===null) {
+        return favoriteCharacterList = []
+    }
+    
+    renderFavorites()
+}
+
+// Function to save character as favorite to local storage
+
+function saveFavoriteCharacter(characterName) {
+
+        // retreives characterlist from local storage
+        favoriteCharacterList = JSON.parse(localStorage.getItem("favoriteCharacters"))
+
+        console.log(favoriteCharacterList)
+
+        for (i=0; i < favoriteCharacterList.length; i++) {
+            if (favoriteCharacterList[i] === characterName) {
+                return
+            } else {
+                
+            }
+        }
+
+        // Adding the user stats object we just captured into the leaderboard array
+        favoriteCharacterList = favoriteCharacterList.concat(characterName);
+
+        // Saving the updated leaderboard array to local storage 
+        localStorage.setItem("favoriteCharacters", JSON.stringify(favoriteCharacterList));
+
+}
+
+
+// Function to render favorite characters to drop down
+
+function renderFavorites() {
+
+    favoriteInputEl.html("")
+
+    console.log(favoriteInputEl)
+
+    htmlTemplateString = "";
+    for(var i=0; i < favoriteCharacterList.length; i++) {
+        
+        //Template literal which will print out a favorite character option for each character saved within the localstorage array
+        htmlTemplateString += `
+        <option>${favoriteCharacterList[i].name}</option>
+        `; 
+    }
+
+    favoriteInputEl.html(`${htmlTemplateString}`) 
+    console.log(favoriteInputEl)
+    
+}
+
+
