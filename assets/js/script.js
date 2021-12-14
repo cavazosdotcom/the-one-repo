@@ -19,16 +19,16 @@ function formSubmit(event){
         return
     } else if(searchInputEl.val()===""){
         getCharacterData(favoriteInputEl.val())
-        getGiphy(favoriteInputEl.val())
+        // getGiphy(favoriteInputEl.val())
 
     } else if (favoriteInputEl.val()==="") {
         getCharacterData(searchInputEl.val())
         console.log()
-        getGiphy(searchInputEl.val())
+        // getGiphy(searchInputEl.val())
         
     } else {
         getCharacterData(searchInputEl.val())
-        getGiphy(searchInputEl.val())
+        // getGiphy(searchInputEl.val())
     }
     
     // clears out search input after form submission
@@ -61,7 +61,7 @@ function getCharacterData (searchVal) {
         console.log(data.docs[0]._id)
         console.log(data.docs[0].name)
         saveFavoriteCharacter(data.docs[0].name)
-
+        getGiphy(data.docs[0].name)
         console.log(data.docs[0].wikiUrl)
         getCharacterQuotes(data.docs[0]._id)
         
@@ -195,24 +195,17 @@ function init() {
         return favoriteCharacterList = []
     }
     
-    renderFavorites()
+    renderFavorites(favoriteCharacterList)
 }
 
 // Function to save character as favorite to local storage
 
 function saveFavoriteCharacter(characterName) {
-
-        // retreives characterlist from local storage
-        favoriteCharacterList = JSON.parse(localStorage.getItem("favoriteCharacters"))
-
-        console.log(favoriteCharacterList)
-
+        
         for (i=0; i < favoriteCharacterList.length; i++) {
             if (favoriteCharacterList[i] === characterName) {
                 return
-            } else {
-                
-            }
+            } 
         }
 
         // Adding the user stats object we just captured into the leaderboard array
@@ -220,30 +213,27 @@ function saveFavoriteCharacter(characterName) {
 
         // Saving the updated leaderboard array to local storage 
         localStorage.setItem("favoriteCharacters", JSON.stringify(favoriteCharacterList));
-
+        renderFavorites(favoriteCharacterList)
 }
 
 
 // Function to render favorite characters to drop down
 
-function renderFavorites() {
-
+function renderFavorites(favorites) {
+    
     favoriteInputEl.html("")
-
-    console.log(favoriteInputEl)
 
     htmlTemplateString = "";
     for(var i=0; i < favoriteCharacterList.length; i++) {
         
         //Template literal which will print out a favorite character option for each character saved within the localstorage array
         htmlTemplateString += `
-        <option>${favoriteCharacterList[i].name}</option>
+        <option>${favorites[i]}</option>
         `; 
     }
 
     favoriteInputEl.html(`${htmlTemplateString}`) 
-    console.log(favoriteInputEl)
     
 }
 
-
+init()
