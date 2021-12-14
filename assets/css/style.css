@@ -12,3 +12,26 @@ html {
 .navbar-menu {
     padding: 0px 0px 0px 100px;
 }
+
+.label {
+    padding: 5px 0px 0px 20px;
+}
+
+.field {
+    box-shadow: 3px 3px 3px black;
+    background-color: grey;
+    border-radius: 10px;
+}
+
+.box {
+    margin-inline: 60px;
+    background-color: grey;
+}
+
+.media {
+    background-color: white;
+}
+
+
+
+
