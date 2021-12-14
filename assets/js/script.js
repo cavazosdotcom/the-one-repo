@@ -5,6 +5,7 @@ var favoriteInputEl = $('#favorite-value')
 var lotrApiKey = "wamtzXv_h1XiQdZTQkoc"
 var giphyApiKey = "Pv2YHiUAl6VaFAsN816cOhgxrE28iBKF"
 
+var favoriteCharacterList = []
 
 
 // Form submission function
@@ -18,16 +19,16 @@ function formSubmit(event){
         return
     } else if(searchInputEl.val()===""){
         getCharacterData(favoriteInputEl.val())
-        getGiphy(favoriteInputEl.val())
+        // getGiphy(favoriteInputEl.val())
 
     } else if (favoriteInputEl.val()==="") {
         getCharacterData(searchInputEl.val())
         console.log()
-        getGiphy(searchInputEl.val())
+        // getGiphy(searchInputEl.val())
         
     } else {
         getCharacterData(searchInputEl.val())
-        getGiphy(searchInputEl.val())
+        // getGiphy(searchInputEl.val())
     }
     
     // clears out search input after form submission
@@ -59,6 +60,8 @@ function getCharacterData (searchVal) {
         // console.log(data.docs[0].dataset['_id'])
         console.log(data.docs[0]._id)
         console.log(data.docs[0].name)
+        saveFavoriteCharacter(data.docs[0].name)
+        getGiphy(data.docs[0].name)
         console.log(data.docs[0].wikiUrl)
         getCharacterQuotes(data.docs[0]._id)
         
@@ -179,3 +182,58 @@ $(document).ready(function() {
   
     });
   });
+
+
+// Initial page load function to pull favorite characters from local storage
+function init() {
+
+    // This will parse the favorite character list array from local storage
+    favoriteCharacterList = JSON.parse(localStorage.getItem("favoriteCharacters"));
+    
+    // If local storage favorite character values do not exist; set it as a blank array
+    if (favoriteCharacterList===null) {
+        return favoriteCharacterList = []
+    }
+    
+    renderFavorites(favoriteCharacterList)
+}
+
+// Function to save character as favorite to local storage
+
+function saveFavoriteCharacter(characterName) {
+        
+        for (i=0; i < favoriteCharacterList.length; i++) {
+            if (favoriteCharacterList[i] === characterName) {
+                return
+            } 
+        }
+
+        // Adding the user stats object we just captured into the leaderboard array
+        favoriteCharacterList = favoriteCharacterList.concat(characterName);
+
+        // Saving the updated leaderboard array to local storage 
+        localStorage.setItem("favoriteCharacters", JSON.stringify(favoriteCharacterList));
+        renderFavorites(favoriteCharacterList)
+}
+
+
+// Function to render favorite characters to drop down
+
+function renderFavorites(favorites) {
+    
+    favoriteInputEl.html("")
+
+    htmlTemplateString = "";
+    for(var i=0; i < favoriteCharacterList.length; i++) {
+        
+        //Template literal which will print out a favorite character option for each character saved within the localstorage array
+        htmlTemplateString += `
+        <option>${favorites[i]}</option>
+        `; 
+    }
+
+    favoriteInputEl.html(`${htmlTemplateString}`) 
+    
+}
+
+init()
