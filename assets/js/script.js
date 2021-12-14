@@ -261,7 +261,7 @@ function renderCharacterData (charData, quoteData) {
     console.log(randomQuote)
 
     var htmlTemplateString = `
-        <div class="box">
+        <div class="container2">
           <article class="media">
             <div class="media-left">
               <figure class="image is-64x64">
