@@ -23,17 +23,19 @@ function formSubmit(event){
 
     } else if (favoriteInputEl.val()==="") {
         getCharacterData(searchInputEl.val())
+        favoriteInputEl.val("")
         console.log()
         // getGiphy(searchInputEl.val())
         
     } else {
         getCharacterData(searchInputEl.val())
+        favoriteInputEl.val("")
         // getGiphy(searchInputEl.val())
     }
     
     // clears out search input after form submission
     searchInputEl.val("")
-    favoriteInputEl.val("")
+    // favoriteInputEl.val("")
 }
 
 
@@ -245,9 +247,14 @@ init()
 function renderCharacterData (charData, quoteData) {
     console.log(charData)
     console.log(quoteData)
+    var randomQuote =""
 
-    var randomQuote = quoteData.docs[getRandomIndex(quoteData.docs.length)]
-    
+    if (quoteData.total===0){
+        randomQuote = "This character has no known quotes in the movies."
+    } else {
+     randomQuote = quoteData.docs[getRandomIndex(quoteData.docs.length)].dialog
+    }
+
     function getRandomIndex( length ) {
         return Math.floor(Math.random()*length);
     }
@@ -266,7 +273,7 @@ function renderCharacterData (charData, quoteData) {
                 <p>
                   <strong>${charData.name}</strong> <small>Character</small> <small>info </small>
                   <br>
-                  ${randomQuote.dialog}
+                  ${randomQuote}
                 </p>
               </div>
               <nav class="level is-mobile">
