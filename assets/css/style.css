@@ -4,3 +4,11 @@ html {
     background-image: center;
     background-attachment: fixed;
 }
+
+.navbar-brand {
+    padding: 0px 0px 0px 40px;
+}
+
+.navbar-menu {
+    padding: 0px 0px 0px 100px;
+}
