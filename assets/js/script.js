@@ -16,16 +16,16 @@ function formSubmit(event){
         alert("Please enter a value")} 
     else if(searchInputEl.val()===""){
         getCharacterData(favoriteInputEl.val())
+        getGiphy(favoriteInputEl.val())
 
     } else if (favoriteInputEl.val()==="") {
         getCharacterData(searchInputEl.val())
         console.log()
         getGiphy(searchInputEl.val())
-        // console.log(getGiphy);
+        
     } else {
         getCharacterData(searchInputEl.val())
         getGiphy(searchInputEl.val())
-        // console.log(getGiphy)
     }
     
     // clears out search input after form submission
@@ -130,28 +130,6 @@ function getGiphy(searchVal) {
             // renderModal(Error, "is-warning")
         });;
 }
-
-        
-//   getGiphy(requestUrl);
-  
-// function getGiphy (searchVal) {
-
-//     var requestUrl = `api.giphy.com/v1/gifs/search?api_key=${giphyApiKey}=${searchVal}&offset=0`;
-    
-    
-    
-//    function getApi(requestUrl) {
-//   fetch(requestUrl)
-//     .then(function (response) {
-//       console.log(response);
-//       if (response.status === 200) {
-//         responseText.textContent = response.status;
-//       }
-//       return response.json();
-//   });
-// }
-
-// getApi(requestUrl);
 
 
 // Event listener for search form submission
