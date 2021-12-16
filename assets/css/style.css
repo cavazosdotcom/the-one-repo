@@ -23,7 +23,10 @@ html {
 
 .box {
     background-color: #4169E1;
-    margin-inline: 200px;
+}
+
+.img-flex {
+    flex: 1 1 0;
 }
 
 .media {
@@ -41,4 +44,28 @@ html {
     border-radius: 5px;
     padding: 20px;
     box-shadow: 2px 2px 2px grey;
+}
+
+/* .column {
+    display: flex;
+    padding: 0.75rem;
+} */
+
+.column-custom{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem;
+}
+
+.justify-evenly {
+    justify-content: space-evenly;
+}
+
+.margin {
+    margin: 24px;
+}
+
+.width {
+    width: 30rem;
 }

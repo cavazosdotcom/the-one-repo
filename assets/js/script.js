@@ -280,7 +280,7 @@ function renderCharacterData (charData, quoteData) {
 function renderGiphy(gif) {
     var htmlTemplateImg = `
         <figure id="giphy">
-            <img src="${gif}" alt="Image">
+            <img class="width" src="${gif}" alt="Image">
         </figure>
     `;
 
