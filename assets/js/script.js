@@ -214,17 +214,19 @@ function toggleFavoriteCharacter(event) {
     favButtonToggle(event)
         
     var characterName = event.target.dataset.charname
+    
     for (i=0; i < favoriteCharacterList.length; i++) {
         if (favoriteCharacterList[i] === characterName) {
-            favoriteCharacterList.slice(i, i+1)
-            return
+            favoriteCharacterList.splice(i, 1)
+            console.log(favoriteCharacterList)
+            return renderFavorites(favoriteCharacterList)
         } 
     }
 
-    // Adding the user stats object we just captured into the leaderboard array
+    // If character name is not saved to favorite character list, add it to array
     favoriteCharacterList = favoriteCharacterList.concat(characterName);
 
-    // Saving the updated leaderboard array to local storage 
+    // Saving the updated favorite character array to local storage 
     localStorage.setItem("favoriteCharacters", JSON.stringify(favoriteCharacterList));
     renderFavorites(favoriteCharacterList)
 }
@@ -312,7 +314,7 @@ function renderCharacterData (charData, quoteData) {
         `;
 
         $('#character-text').html(htmlTemplateString)
-        
+
         $('#fav-button').on('click', toggleFavoriteCharacter)
     }
     
