@@ -22,13 +22,13 @@ function formSubmit(event){
         // getGiphy(favoriteInputEl.val())
 
     } else if (favoriteInputEl.val()==="") {
-        getCharacterData(searchInputEl.val())
+        getCharacterData(searchInputEl.val().trim())
         favoriteInputEl.val("")
         console.log()
         // getGiphy(searchInputEl.val())
         
     } else {
-        getCharacterData(searchInputEl.val())
+        getCharacterData(searchInputEl.val().trim())
         favoriteInputEl.val("")
         // getGiphy(searchInputEl.val())
     }
@@ -255,6 +255,8 @@ init()
 
 
 function renderCharacterData (charData, quoteData) {
+    console.log(favoriteCharacterList)
+        
     console.log(charData)
     console.log(quoteData)
     var randomQuote =""
