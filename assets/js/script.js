@@ -62,7 +62,7 @@ function getCharacterData (searchVal) {
         // console.log(data.docs[0].dataset['_id'])
         console.log(data.docs[0]._id)
         console.log(data.docs[0].name)
-        saveFavoriteCharacter(data.docs[0].name)
+        // saveFavoriteCharacter(data.docs[0].name)
         getGiphy(data.docs[0].name)
         console.log(data.docs[0].wikiUrl)
         getCharacterQuotes(data.docs[0])
@@ -210,8 +210,9 @@ function init() {
 
 // Function to save character as favorite to local storage
 
-function saveFavoriteCharacter(characterName) {
+function saveFavoriteCharacter(event) {
         
+        var characterName = event.target.dataset.charname
         for (i=0; i < favoriteCharacterList.length; i++) {
             if (favoriteCharacterList[i] === characterName) {
                 return
@@ -290,7 +291,7 @@ function renderCharacterData (charData, quoteData) {
                 </div>
                 <div class="column has-text-right">
                     <button id="fav-button">
-                        <img src='./assets/images/not-fav.png'>
+                        <img src="./assets/images/not-fav.png" data-charname="${charData.name}">
                     </button>
                 </div>
             </div>         
@@ -309,8 +310,9 @@ function renderCharacterData (charData, quoteData) {
         `;
 
         $('#character-text').html(htmlTemplateString)
-
-}
+        $('#fav-button').on('click', saveFavoriteCharacter)
+    }
+    
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
