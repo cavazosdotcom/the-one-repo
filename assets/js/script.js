@@ -4,7 +4,7 @@ var favoriteInputEl = $('#favorite-value')
 
 var lotrApiKey = "wamtzXv_h1XiQdZTQkoc"
 var giphyApiKey = "Pv2YHiUAl6VaFAsN816cOhgxrE28iBKF"
-
+var giphyLink;
 var favoriteCharacterList = []
 
 
@@ -145,11 +145,13 @@ function modalToggle(){
 $('.modal').on('click', modalToggle)
 
 
+
+
 function getGiphy(searchVal) {
 
     // TODO: create random number generator between 0 and 50? for ranNum variable
     var ranNum = Math.floor(Math.random() * 9);
-
+    console.log(ranNum);
     var requestUrl = `https://api.giphy.com/v1/gifs/search?api_key=${giphyApiKey}&q=${searchVal}&offset=${ranNum}`;
    
     fetch(requestUrl)
@@ -158,8 +160,11 @@ function getGiphy(searchVal) {
             return response.json()
         
         .then(function (data) {
-            console.log(ranNum);
-            console.log(data.data[ranNum].images.looping.mp4);
+            // console.log(ranNum);
+            // console.log(data.data[ranNum].images.downsized.url);
+            giphyLink = data.data[ranNum].images.downsized.url;
+            console.log(data)
+            renderGiphy(giphyLink);
         });
         } else {
             throw Error(response.statusText + ". We were not able to locate the character you searched for.");
@@ -261,25 +266,24 @@ function renderCharacterData (charData, quoteData) {
     console.log(randomQuote)
 
     var htmlTemplateString = `
-        <div class="container2">
-          <article class="media">
-            <div class="media-left">
-              <figure class="image is-64x64">
-                <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
-              </figure>
-            </div>
-            <div class="media-content">
-              <div class="content">
                 <p>
                   <strong>${charData.name}</strong> <small>Character</small> <small>info </small>
                   <br>
                   ${randomQuote}
                 </p>
-              </div>
-            </div>
-          </article>
-        </div>
         `;
 
-        $('.box').html(htmlTemplateString)
+        $('#character-text').html(htmlTemplateString)
 }
+
+
+function renderGiphy(gif) {
+    var htmlTemplateImg = `
+        <figure id="giphy">
+            <img src="${gif}" alt="Image">
+        </figure>
+    `;
+
+    
+    $('#giphy').html(htmlTemplateImg);
+};
