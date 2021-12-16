@@ -253,7 +253,7 @@ function renderCharacterData (charData, quoteData) {
     console.log(charData)
     console.log(quoteData)
     var randomQuote =""
-
+    
     if (quoteData.total===0){
         randomQuote = "This character has no known quotes in the movies."
     } else {
@@ -264,10 +264,29 @@ function renderCharacterData (charData, quoteData) {
         return Math.floor(Math.random()*length);
     }
     console.log(randomQuote)
+    
+    var charInfoHtmlTemplate = ""
+    for (const key in charData) {
+        if (charData.hasOwnProperty(key)) {
+            if(charData[key]==="" || key==="_id" || key==="name" || key==="wikiUrl"){
+                // do nothing if key has blank value, is the id, or name   
+            } else {
+            charInfoHtmlTemplate += `
+            <li>${capitalizeFirstLetter(key)}: ${charData[key]}</li>
+            `            
+            }
+        }
+        
+    }
+    
 
     var htmlTemplateString = `
                 <p>
-                  <strong>${charData.name}</strong> <small>Character</small> <small>info </small>
+                  <strong>${charData.name}</strong> 
+                  <br>
+                  <ul>
+                    ${charInfoHtmlTemplate}
+                  </ul>
                   <br>
                   ${randomQuote}
                 </p>
@@ -276,6 +295,9 @@ function renderCharacterData (charData, quoteData) {
         $('#character-text').html(htmlTemplateString)
 }
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 function renderGiphy(gif) {
     var htmlTemplateImg = `
