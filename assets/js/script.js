@@ -282,24 +282,34 @@ function renderCharacterData (charData, quoteData) {
     
 
     var htmlTemplateString = `
-                <h1 class="is-size-2">
-                    <strong>${charData.name}</strong> 
-                </h1>
-                <ul>
-                    ${charInfoHtmlTemplate}
-                </ul>
-                <br>
-                <p>
-                  "${randomQuote}"
-                </p>
-                
-                <br>
-                
-                <a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>
+            <div class="columns is-align-items-center">
+                <div class="column">
+                    <h1 class="is-size-2">
+                        <strong>${charData.name}</strong> 
+                    </h1>
+                </div>
+                <div class="column has-text-right">
+                    <button id="fav-button">
+                        <img src='./assets/images/not-fav.png'>
+                    </button>
+                </div>
+            </div>         
+            <ul>
+                ${charInfoHtmlTemplate}
+            </ul>
+            <br>
+            <p>
+                "${randomQuote}"
+            </p>
+            
+            <br>
+            
+            <a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>
                 
         `;
 
         $('#character-text').html(htmlTemplateString)
+
 }
 
 function capitalizeFirstLetter(string) {
