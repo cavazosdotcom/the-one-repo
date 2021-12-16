@@ -7,7 +7,7 @@ var giphyApiKey = "Pv2YHiUAl6VaFAsN816cOhgxrE28iBKF"
 var giphyLink;
 var favoriteCharacterList = []
 
-
+function TestsFunction() { TestsDiv.style.display = 'block' }
 // Form submission function
 function formSubmit(event){
     
@@ -253,7 +253,7 @@ function renderCharacterData (charData, quoteData) {
     console.log(charData)
     console.log(quoteData)
     var randomQuote =""
-    
+
     if (quoteData.total===0){
         randomQuote = "This character has no known quotes in the movies."
     } else {
@@ -264,47 +264,18 @@ function renderCharacterData (charData, quoteData) {
         return Math.floor(Math.random()*length);
     }
     console.log(randomQuote)
-    
-    var charInfoHtmlTemplate = ""
-
-    for (const key in charData) {
-        if (charData.hasOwnProperty(key)) {
-            if(charData[key]==="" || key==="_id" || key==="name" || key==="wikiUrl" || charData[key]==="NaN") {
-                // do nothing if key has blank value, is the id, or name   
-            } else {
-            charInfoHtmlTemplate += `
-            <li><strong>${capitalizeFirstLetter(key)}:</strong> ${charData[key]}</li>
-            `            
-            }
-        }
-        
-    }
-    
 
     var htmlTemplateString = `
-                <h1 class="is-size-2">
-                    <strong>${charData.name}</strong> 
-                </h1>
-                <ul>
-                    ${charInfoHtmlTemplate}
-                </ul>
-                <br>
                 <p>
-                  "${randomQuote}"
+                  <strong>${charData.name}</strong> <small>Character</small> <small>info </small>
+                  <br>
+                  ${randomQuote}
                 </p>
-                
-                <br>
-                
-                <a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>
-                
         `;
 
         $('#character-text').html(htmlTemplateString)
 }
 
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
 
 function renderGiphy(gif) {
     var htmlTemplateImg = `
