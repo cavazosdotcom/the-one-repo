@@ -1,106 +1,106 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>The One Fansite to Rule them All</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <link rel="stylesheet" href="./assets/css/style.css">
-  </head>
-  <body>
-      <header>
-          <!-- possible shadow in nav tag "has-shadow" -->
-          <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
-                <img src="assets/images/1467678745c3442eb98440d4521b790e6a1edc99c2.png" width="auto" height="auto">
-              </a>        
-              <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-              </a>
-            </div>
-          
-            <div id="navbarBasicExample" class="navbar-menu">
-              <div class="navbar-start">
-                <a class="navbar-item">
-                  The ONE site to RULE them ALL
-                </a>
-              </div>
-              <div class="navbar-end">
-                <a class="navbar-item">
-                  Home
-                </a>
-                <a class="navbar-item">
-                  About Us
-                </a>        
-                  </div>
-              </div>        
-              <div class="navbar-end">
-                <div class="navbar-item">
-                </div>
-              </div>
-            </div>
-          </nav>
-      </header>
-    <main>
-        <section class="section">
-            <div class="container">
-                
-                <form id="search-input">
-                    <div class="field">
-                        <label class="label">Name</label>
-                        <div class="control">
-                        <input id="search-value" class="input" type="text" placeholder="Text input" />
-                        </div>
-                    </div>
-                    
-                    <!-- Local Storage "favorite" character picker -->
-                    <div class="field">
-                        <label class="label">Subject</label>
-                        <div class="control">
-                        <div class="select">
-                            <select id="favorite-value">
-                            <!-- Favorite character options go here -->
-                            </select>
-                        </div>
-                        </div>
-                    </div>
-                    
-                    
-                    <div class="field is-grouped">
-                        <div onclick="TestFunction" class="control">
-                        <button class="button is-link" onclick="TestsFunction()">Submit</button>
-                        </div>
-                    </div>
-                </form>
-                    
-            </div>
-        </section>
-      <!--media display box-->
-       
-      <div id="TestsDiv" style="display:none" class="columns">
-        <div class="column" >
-          <div class="box">
-            <figure id="giphy">
-              <img src="https://media3.giphy.com/media/pzqEdzCFRgGI0/giphy.gif?cid=ecf05e47cyz6invjxzjof944zhkt1d83cpndxfz495b71z3e&rid=giphy.gif&ct=g" alt="gif">
-            </figure>
-          </div>  
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The One Fansite to Rule them All</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+  <header>
+    <!-- possible shadow in nav tag "has-shadow" -->
+    <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <img src="assets/images/1467678745c3442eb98440d4521b790e6a1edc99c2.png" width="auto" height="auto">
+        </a>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item">
+            The ONE site to RULE them ALL
+          </a>
         </div>
-        <div class="column">
-          <div class="box">  
-            <p id="character-text">
-              <strong>Random character</strong> <small></small> <small></small>
-              <br>
-              Click 'submit' to see a quote from your favorite character!
-            </p>
-        </div>  
+        <div class="navbar-end">
+          <div class="navbar-end">
+            <a href="" class="navbar-item">
+              Home
+            </a>
+            <a href="about.html" class="navbar-item">
+              About Us
+            </a>        
+          </div>
         </div>
-        
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section class="section">
+      <div class="container">
+
+        <form id="search-input">
+          <div class="field">
+            <label class="label">Name</label>
+            <div class="control">
+              <input id="search-value" class="input" type="text" placeholder="Text input" />
+            </div>
+          </div>
+
+          <!-- Local Storage "favorite" character picker -->
+          <div class="field">
+            <label class="label">Subject</label>
+            <div class="control">
+              <div class="select">
+                <select id="favorite-value">
+                  <!-- Favorite character options go here -->
+                </select>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-link">Submit</button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </section>
+    <!--media display box-->
+
+    <div class="columns">
+      <div class="column">
+        <div class="box">
+          <figure id="giphy">
+            <img
+              src="https://media3.giphy.com/media/pzqEdzCFRgGI0/giphy.gif?cid=ecf05e47cyz6invjxzjof944zhkt1d83cpndxfz495b71z3e&rid=giphy.gif&ct=g"
+              alt="gif">
+          </figure>
+        </div>
+      </div>
+      <div class="column">
+        <div class="box">
+          <p id="character-text">
+            <strong>Random character</strong> <small></small> <small></small>
+            <br>
+            Click 'submit' to see a quote from your favorite character!
+          </p>
+        </div>
       </div>
 
+    </div>
 
-        <!-- <div class="box">
+
+    <!-- <div class="box">
           <article class="media">
             <div>
               <figure id="giphy">
@@ -115,25 +115,26 @@
                   Click 'submit' to see a quote from your favorite character!
                 </p>
             </div> -->
-             <!--couple cointainers-->
-        <div class="container2">
-          <section>
-            
-        </section>
-        </div>
-        <div class="container3">
-          <section>
-            
-        </section>
-        </div>
-          </article>
-        </div>
-            <div class="modal">
-                <div class="modal-background"></div>
-                <div class="modal-content"></div>
-            </div>
-    </main>
+    <!--couple cointainers-->
+    <div class="container2">
+      <section>
+
+      </section>
+    </div>
+    <div class="container3">
+      <section>
+
+      </section>
+    </div>
+    </article>
+    </div>
+    <div class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content"></div>
+    </div>
+  </main>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="./assets/js/script.js"></script>
-  </body>
+</body>
+
 </html>
