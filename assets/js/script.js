@@ -266,13 +266,14 @@ function renderCharacterData (charData, quoteData) {
     console.log(randomQuote)
     
     var charInfoHtmlTemplate = ""
+
     for (const key in charData) {
         if (charData.hasOwnProperty(key)) {
-            if(charData[key]==="" || key==="_id" || key==="name" || key==="wikiUrl"){
+            if(charData[key]==="" || key==="_id" || key==="name" || key==="wikiUrl" || charData[key]==="NaN") {
                 // do nothing if key has blank value, is the id, or name   
             } else {
             charInfoHtmlTemplate += `
-            <li>${capitalizeFirstLetter(key)}: ${charData[key]}</li>
+            <li><strong>${capitalizeFirstLetter(key)}:</strong> ${charData[key]}</li>
             `            
             }
         }
@@ -281,15 +282,21 @@ function renderCharacterData (charData, quoteData) {
     
 
     var htmlTemplateString = `
-                <p>
-                  <strong>${charData.name}</strong> 
-                  <br>
-                  <ul>
+                <h1 class="is-size-2">
+                    <strong>${charData.name}</strong> 
+                </h1>
+                <ul>
                     ${charInfoHtmlTemplate}
-                  </ul>
-                  <br>
-                  ${randomQuote}
+                </ul>
+                <br>
+                <p>
+                  "${randomQuote}"
                 </p>
+                
+                <br>
+                
+                <a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>
+                
         `;
 
         $('#character-text').html(htmlTemplateString)

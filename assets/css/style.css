@@ -5,6 +5,11 @@ html {
     background-attachment: fixed;
 }
 
+a {
+    text-decoration: none;
+    color:inherit;
+}
+
 .navbar-brand {
     padding: 0px 0px 0px 40px;
 }
