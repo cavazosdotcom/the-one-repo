@@ -18,16 +18,27 @@ html {
 }
 
 .field {
-    box-shadow: 3px 3px 3px black;
-    background-color: grey;
     border-radius: 10px;
 }
 
 .box {
-    margin-inline: 60px;
-    background-color: grey;
+    background-color: #4169E1;
+    margin-inline: 200px;
 }
 
 .media {
     background-color: white;
+}
+
+.button {
+    flex: center;
+    border: none;
+    color: white;
+}
+
+.container {
+    background: #4169E1;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 2px 2px 2px grey;
 }
