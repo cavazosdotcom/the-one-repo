@@ -210,21 +210,23 @@ function init() {
 
 // Function to save character as favorite to local storage
 
-function saveFavoriteCharacter(event) {
+function toggleFavoriteCharacter(event) {
+    favButtonToggle(event)
         
-        var characterName = event.target.dataset.charname
-        for (i=0; i < favoriteCharacterList.length; i++) {
-            if (favoriteCharacterList[i] === characterName) {
-                return
-            } 
-        }
+    var characterName = event.target.dataset.charname
+    for (i=0; i < favoriteCharacterList.length; i++) {
+        if (favoriteCharacterList[i] === characterName) {
+            favoriteCharacterList.slice(i, i+1)
+            return
+        } 
+    }
 
-        // Adding the user stats object we just captured into the leaderboard array
-        favoriteCharacterList = favoriteCharacterList.concat(characterName);
+    // Adding the user stats object we just captured into the leaderboard array
+    favoriteCharacterList = favoriteCharacterList.concat(characterName);
 
-        // Saving the updated leaderboard array to local storage 
-        localStorage.setItem("favoriteCharacters", JSON.stringify(favoriteCharacterList));
-        renderFavorites(favoriteCharacterList)
+    // Saving the updated leaderboard array to local storage 
+    localStorage.setItem("favoriteCharacters", JSON.stringify(favoriteCharacterList));
+    renderFavorites(favoriteCharacterList)
 }
 
 
@@ -310,13 +312,27 @@ function renderCharacterData (charData, quoteData) {
         `;
 
         $('#character-text').html(htmlTemplateString)
-        $('#fav-button').on('click', saveFavoriteCharacter)
+        
+        $('#fav-button').on('click', toggleFavoriteCharacter)
     }
     
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+function favButtonToggle (event) {
+    
+    if (event.target.getAttribute("src") == "./assets/images/not-fav.png") {
+        $(event.target).attr("src", "./assets/images/fav.png")
+        return
+    } else {
+        $(event.target).attr("src", "./assets/images/not-fav.png")
+    }
+
+}
+
+
 
 function renderGiphy(gif) {
     var htmlTemplateImg = `
