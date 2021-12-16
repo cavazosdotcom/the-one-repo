@@ -47,3 +47,15 @@ a {
     padding: 20px;
     box-shadow: 2px 2px 2px grey;
 }
+
+#fav-button {
+    border: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+#fav-button img {
+    height:40px;
+    width:auto;
+}
