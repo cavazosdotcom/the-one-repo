@@ -225,7 +225,7 @@ function toggleFavoriteCharacter(event) {
 
     // If character name is not saved to favorite character list, add it to array
     favoriteCharacterList = favoriteCharacterList.concat(characterName);
-
+    console.log(favoriteCharacterList)
     // Saving the updated favorite character array to local storage 
     localStorage.setItem("favoriteCharacters", JSON.stringify(favoriteCharacterList));
     renderFavorites(favoriteCharacterList)
@@ -256,11 +256,11 @@ init()
 
 function renderCharacterData (charData, quoteData) {
     console.log(favoriteCharacterList)
-        
+    favFileFinder(favoriteCharacterList, charData.name)
     console.log(charData)
     console.log(quoteData)
     var randomQuote =""
-
+    
     if (quoteData.total===0){
         randomQuote = "This character has no known quotes in the movies."
     } else {
@@ -271,6 +271,22 @@ function renderCharacterData (charData, quoteData) {
         return Math.floor(Math.random()*length);
     }
     console.log(randomQuote)
+    
+    var charInfoHtmlTemplate = ""
+
+    for (const key in charData) {
+        if (charData.hasOwnProperty(key)) {
+            if(charData[key]==="" || key==="_id" || key==="name" || key==="wikiUrl" || charData[key]==="NaN") {
+                // do nothing if key has blank value, is the id, or name   
+            } else {
+            charInfoHtmlTemplate += `
+            <li><strong>${capitalizeFirstLetter(key)}:</strong> ${charData[key]}</li>
+            `            
+            }
+        }
+        
+    }
+    
 
     var htmlTemplateString = `
             <div class="columns is-align-items-center">
@@ -281,7 +297,7 @@ function renderCharacterData (charData, quoteData) {
                 </div>
                 <div class="column has-text-right">
                     <button id="fav-button">
-                        <img src="./assets/images/not-fav.png" data-charname="${charData.name}">
+                        <img src="./assets/images/${favFilePath}" data-charname="${charData.name}">
                     </button>
                 </div>
             </div>         
@@ -305,6 +321,9 @@ function renderCharacterData (charData, quoteData) {
     }
     
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 function favButtonToggle (event) {
     
@@ -315,6 +334,17 @@ function favButtonToggle (event) {
         $(event.target).attr("src", "./assets/images/not-fav.png")
     }
 
+}
+
+function favFileFinder(favList, characterName) {
+    for (i=0; i < favList.length; i++) {
+        if (favList[i] === characterName) {
+            favFilePath= "fav.png"
+            return favFilePath
+        } else {favFilePath ="not-fav.png"}
+
+    }
+    return favFilePath
 }
 
 
