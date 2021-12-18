@@ -13,7 +13,7 @@ function TestsFunction() { TestsDiv.style.display = 'block' }
 function formSubmit(event){
     
     event.preventDefault()
-    
+
     if (searchInputEl.val()==="" && favoriteInputEl.val()===null) {
         console.log("Can you see this")
         renderErrorModal("Please enter a character name.", "is-info")
@@ -58,16 +58,20 @@ function getCharacterData (searchVal) {
         if (response.ok) {
             return response.json()
         .then(function(data){
-
-        renderMultiResultsModal(data)
+            if (data.docs.length === 1) {
+                getGiphy(data.docs[0].name)
+                getCharacterQuotes(data.docs[0])
+            } else if (data.docs.length > 1) {
+                renderMultiResultsModal(data)
+            }
+            
         console.log(data);
         // console.log(data.docs[0].dataset['_id'])
+        console.log(data.docs[0].wikiUrl)
         console.log(data.docs[0]._id)
         console.log(data.docs[0].name)
         // saveFavoriteCharacter(data.docs[0].name)
-        getGiphy(data.docs[0].name)
-        console.log(data.docs[0].wikiUrl)
-        getCharacterQuotes(data.docs[0])
+        
         
         })
         } else {
@@ -118,7 +122,7 @@ function getCharacterQuotes(charData){
 
 // Modal handler
 function renderErrorModal(errorResponse, severity) {
-    console.log
+    
     var modalType = ""
     if(severity === "is-warning"){
         modalType = "Warning"
@@ -126,7 +130,7 @@ function renderErrorModal(errorResponse, severity) {
         modalType = "We need more information."
     }
 
-    $('.modal-content').html(`
+    $('#error-modal-content').html(`
                 <article class="message ${severity}">
                     <div class="message-header">
                         <p>${modalType}</p>
@@ -137,20 +141,57 @@ function renderErrorModal(errorResponse, severity) {
                     </div>
                 </article>
                 `)
-    modalToggle()
+    modalToggle("error")
 }
 
 function renderMultiResultsModal(data) {
-    console.log(data.docs)
+    
+    var htmlTemplate = ""
+    for (i=0; i < data.docs.length; i++) {
+        console.log(data.docs[i]._id)
+        console.log(data.docs[i].name)
+        htmlTemplate += `
+        <button class="button is-dark is-fullwidth m-1" data-id="${data.docs[i]._id}">${data.docs[i].name}</button>        
+            `;
+    }
+
+
+    $('#search-modal-content').html(`
+                <article class="message is-info">
+                    <div class="message-header">
+                        <p>"is-info"</p>
+                        
+                    </div>
+                    <div class="message-body">
+                        ${htmlTemplate}
+                    </div>
+                </article>
+                `)
+    modalToggle("search-result")
+    // <button class="delete" aria-label="delete"></button>
+    
+};
+
+// $('#search-modal-content').on('click', '[data-target]', modalToggle("search-result"))
+// $('#error-modal').on('click', modalToggle("error"))
+
+
+function modalToggle(modalId){
+    $(`#${modalId}-modal`).toggleClass('is-active')
 }
 
-function modalToggle(){
-    $('.modal').toggleClass('is-active')
-}
 
-$('#error-modal').on('click', modalToggle)
+$( document.body)
+.on('click', '[data-target]', function(){
+    if (this.dataset.target === "error") {
+        modalToggle(this.dataset.target)
+    } else if (this.dataset.target === "search-result"){
 
-
+        modalToggle(this.dataset.target)
+    }
+    // modalToggle(this.dataset.target)
+    // $(`#${this.dataset.target}`).toggleClass('is-active')}
+});
 
 
 function getGiphy(searchVal) {
