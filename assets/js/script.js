@@ -290,31 +290,32 @@ function renderCharacterData (charData, quoteData) {
     
    
     var htmlTemplateString = `
-
-        <div class="box">
-            <div class="columns justify-between">
-                
+    <div class="box">
+        <div class="columns is-align-items-center">
+            <div class="column">
                 <h1 class="is-size-2">
                     <strong>${charData.name}</strong> 
                 </h1>
-            
+            </div>
+            <div class="column has-text-right">
                 <button id="fav-button">
                     <img src="./assets/images/${favFilePath}" data-charname="${charData.name}">
                 </button>
-            </div>         
-            <ul>
-                ${charInfoHtmlTemplate}
-            </ul>
-            <br>
-            <p>
-                "${randomQuote}"
-            </p>
-            
-            <br>
-            
-            <a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>
-        </div>        
-        `;
+            </div>
+        </div>         
+        <ul>
+            ${charInfoHtmlTemplate}
+        </ul>
+        <br>
+        <p>
+            "${randomQuote}"
+        </p>
+
+        <br>
+
+        <a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>        
+        </div>
+    `;
 
         $('#character-text').html(htmlTemplateString)
 
