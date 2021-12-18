@@ -11,7 +11,7 @@ a {
 }
 
 .navbar-brand {
-    padding: 0px 0px 0px 40px;
+    padding: 0px 0px 0px 60px;
 }
 
 .navbar-menu {
@@ -19,7 +19,7 @@ a {
 }
 
 .label {
-    padding: 5px 0px 0px 20px;
+    padding: 5px 0px 0px 0px;
     color: white;
 }
 
@@ -28,7 +28,7 @@ a {
 }
 
 .box {
-    background-color: #4169E1;
+    background-color: rgb(51, 61, 60);
     color: white;
 }
 
@@ -46,7 +46,7 @@ a {
 }
 
 .container {
-    background: #4169E1;
+    background: rgb(51, 61, 60);
     border-radius: 5px;
     padding: 20px;
     color: white;
@@ -69,20 +69,13 @@ a {
     justify-content: space-evenly;
 }
 
-.justify-between {
-    justify-content: space-between;
-}
-
-.flex {
-    display:flex;
-}
-
 .margin {
     margin: 24px;
 }
 
 .width {
     width: 30rem;
+    min-width: 23rem;
 }    
 
 #fav-button {
@@ -106,4 +99,14 @@ strong {
     overflow-y: auto;
     /* prevent horizontal scrollbar */
     overflow-x: hidden;
+}
+
+.char-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-end {
+    padding: 0px 30px 0px 0px;
 }

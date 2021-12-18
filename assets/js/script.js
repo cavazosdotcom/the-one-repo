@@ -351,13 +351,13 @@ function renderCharacterData (charData, quoteData) {
    
     var htmlTemplateString = `
     <div class="box">
-        <div class="columns is-align-items-center">
-            <div class="column">
+        <div class="char-flex">
+            <div class="">
                 <h1 class="is-size-2">
                     <strong>${charData.name}</strong> 
                 </h1>
             </div>
-            <div class="column has-text-right">
+            <div class="">
                 <button id="fav-button">
                     <img src="./assets/images/${favFilePath}" data-charname="${charData.name}">
                 </button>
