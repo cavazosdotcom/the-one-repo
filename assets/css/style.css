@@ -71,8 +71,8 @@ a {
     justify-content: space-between;
 }
 
-.flex-end {
-    justify-content: flex-end;
+.flex {
+    display:flex;
 }
 
 .margin {
