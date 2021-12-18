@@ -5,6 +5,11 @@ html {
     background-attachment: fixed;
 }
 
+a {
+    text-decoration: none;
+    color:inherit;
+}
+
 .navbar-brand {
     padding: 0px 0px 0px 40px;
 }
@@ -15,6 +20,7 @@ html {
 
 .label {
     padding: 5px 0px 0px 20px;
+    color: white
 }
 
 .field {
@@ -24,6 +30,7 @@ html {
 .box {
     background-color: #4169E1;
     margin-inline: 200px;
+    color: white
 }
 
 .media {
@@ -40,5 +47,16 @@ html {
     background: #4169E1;
     border-radius: 5px;
     padding: 20px;
-    box-shadow: 2px 2px 2px grey;
+}
+
+#fav-button {
+    border: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+#fav-button img {
+    height:40px;
+    width:auto;
 }
