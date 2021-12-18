@@ -158,7 +158,7 @@ function renderMultiResultsModal(data) {
         console.log(data.docs[i]._id)
         console.log(data.docs[i].name)
         htmlTemplate += `
-        <button class="button is-dark is-fullwidth m-1" data-arrayindex="${i}" data-id="${data.docs[i]._id}">${data.docs[i].name}</button>        
+        <button class="button is-danger is-focus is-fullwidth m-1" data-arrayindex="${i}" data-id="${data.docs[i]._id}">${data.docs[i].name}</button>        
             `;
     }
 
@@ -166,11 +166,11 @@ function renderMultiResultsModal(data) {
     $('#search-modal-content').html(`
                 <article class="message is-info">
                     <div class="message-header">
-                        <p>Uh Oh!</p>
+                        <p><strong>Uh Oh!</strong></p>
                         
                     </div>
                     <div class="message-body">
-                        <p>The character name you searched for has more than one result.<br>Please select the correct one:</p>
+                        <p>The character name you searched for has more than one result.<br>Please select the correct one:<br><br></p>
                         ${htmlTemplate}
                     </div>
                 </article>

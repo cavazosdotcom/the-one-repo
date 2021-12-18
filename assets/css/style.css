@@ -132,3 +132,16 @@ a:hover {
         width: auto;
     }
 }
+
+.message.is-info .message-header {
+    background-color: rgb(51, 61, 60);
+}
+
+.message strong {
+    color: gold;
+}
+
+.message.is-info .message-body {
+    background-color: rgb(171, 175, 175);
+    color:white;
+}
