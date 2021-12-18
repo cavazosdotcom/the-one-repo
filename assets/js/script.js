@@ -6,6 +6,7 @@ var lotrApiKey = "wamtzXv_h1XiQdZTQkoc"
 var giphyApiKey = "Pv2YHiUAl6VaFAsN816cOhgxrE28iBKF"
 var giphyLink;
 var favoriteCharacterList = []
+var favFilePath = "not-fav.png"
 
 function TestsFunction() { TestsDiv.style.display = 'block' }
 // Form submission function
@@ -15,7 +16,7 @@ function formSubmit(event){
 
     if (searchInputEl.val()==="" && favoriteInputEl.val()==="") {
         console.log("Can you see this")
-        renderModal("Please enter a character name.", "is-info")
+        renderErrorModal("Please enter a character name.", "is-info")
         return
     } else if(searchInputEl.val()===""){
         getCharacterData(favoriteInputEl.val())
@@ -74,7 +75,7 @@ function getCharacterData (searchVal) {
         }
         })
         .catch(function (Error) {
-            renderModal(Error, "is-warning")
+            renderErrorModal(Error, "is-warning")
     });;
 };
 
@@ -110,12 +111,12 @@ function getCharacterQuotes(charData){
         }
         })
         .catch(function (Error) {
-            renderModal(Error, "is-warning")
+            renderErrorModal(Error, "is-warning")
         });;
 }
 
 // Modal handler
-function renderModal(errorResponse, severity) {
+function renderErrorModal(errorResponse, severity) {
     console.log
     var modalType = ""
     if(severity === "is-warning"){
@@ -202,6 +203,8 @@ function init() {
     
     // If local storage favorite character values do not exist; set it as a blank array
     if (favoriteCharacterList===null) {
+        console.log(favoriteCharacterList)
+
         return favoriteCharacterList = []
     }
     
@@ -237,7 +240,7 @@ function toggleFavoriteCharacter(event) {
 function renderFavorites(favorites) {
     
     favoriteInputEl.html("")
-
+    
     htmlTemplateString = "";
     for(var i=0; i < favoriteCharacterList.length; i++) {
         
