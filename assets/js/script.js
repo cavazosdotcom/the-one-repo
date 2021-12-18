@@ -427,5 +427,5 @@ function renderGiphy(gif, title) {
 
 
 searchInputEl.autocomplete({
-    source: popularCharacters
+    source: characterFill
   });
