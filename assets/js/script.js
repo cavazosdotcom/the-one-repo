@@ -7,6 +7,7 @@ var giphyApiKey = "Pv2YHiUAl6VaFAsN816cOhgxrE28iBKF"
 var giphyLink;
 var favoriteCharacterList = []
 
+function TestsFunction() { TestsDiv.style.display = 'block' };
 
 // Form submission function
 function formSubmit(event){
@@ -266,7 +267,7 @@ function renderCharacterData (charData, quoteData) {
     console.log(randomQuote)
 
     var htmlTemplateString = `
-                <p>
+                <p id="character-text">
                   <strong>${charData.name}</strong> <small>Character</small> <small>info </small>
                   <br>
                   ${randomQuote}
@@ -280,7 +281,7 @@ function renderCharacterData (charData, quoteData) {
 function renderGiphy(gif) {
     var htmlTemplateImg = `
         <figure id="giphy">
-            <img class="width" src="${gif}" alt="Image">
+            <img class="width img-flex" src="${gif}" alt="Image">
         </figure>
     `;
 
