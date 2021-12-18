@@ -350,30 +350,30 @@ function renderCharacterData (charData, quoteData) {
     }
    
     var htmlTemplateString = `
-    <div class="box char-width">
-        <div class="char-flex">
-            <div class="">
-                <h1 class="is-size-2">
-                    <strong>${charData.name}</strong> 
-                </h1>
-            </div>
-            <div class="">
-                <button id="fav-button">
-                    <img src="./assets/images/${favFilePath}" data-charname="${charData.name}">
-                </button>
-            </div>
-        </div>         
-        <ul>
-            ${charInfoHtmlTemplate}
-        </ul>
-        <br>
-        <p>
-            "${randomQuote}"
-        </p>
+        <div class="box char-width">
+            <div class="char-flex">
+                <div class="">
+                    <h1 class="is-size-2">
+                        <strong>${charData.name}</strong> 
+                    </h1>
+                </div>
+                <div class="">
+                    <button id="fav-button">
+                        <img src="./assets/images/${favFilePath}" data-charname="${charData.name}">
+                    </button>
+                </div>
+            </div>         
+            <ul>
+                ${charInfoHtmlTemplate}
+            </ul>
+            <br>
+            <p>
+                "${randomQuote}"
+            </p>
 
-        <br>
+            <br>
 
-        ${wikiUrlTemplate}        
+            ${wikiUrlTemplate}        
         </div>
     `;
     
