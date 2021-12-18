@@ -100,3 +100,10 @@ a {
 strong {
     color: gold;
 }
+
+.ui-autocomplete {
+    max-height: 100px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+}

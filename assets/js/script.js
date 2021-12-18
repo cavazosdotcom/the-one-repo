@@ -274,7 +274,7 @@ function toggleFavoriteCharacter(event) {
     for (i=0; i < favoriteCharacterList.length; i++) {
         if (favoriteCharacterList[i] === characterName) {
             favoriteCharacterList.splice(i, 1)
-            console.log(favoriteCharacterList)
+            localStorage.setItem("favoriteCharacters", JSON.stringify(favoriteCharacterList));
             return renderFavorites(favoriteCharacterList)
         } 
     }
@@ -424,3 +424,8 @@ function renderGiphy(gif, title) {
     $('#giphy').html(htmlTemplateImg);
     console.log(title)
 };
+
+
+searchInputEl.autocomplete({
+    source: popularCharacters
+  });
