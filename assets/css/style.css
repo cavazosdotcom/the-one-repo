@@ -20,6 +20,7 @@ a {
 
 .label {
     padding: 5px 0px 0px 20px;
+    color: white;
 }
 
 .field {
@@ -28,6 +29,7 @@ a {
 
 .box {
     background-color: #4169E1;
+    color: white;
 }
 
 .img-flex {
@@ -41,14 +43,14 @@ a {
 .button {
     flex: center;
     border: none;
-    color: white;
 }
 
 .container {
     background: #4169E1;
     border-radius: 5px;
     padding: 20px;
-    box-shadow: 2px 2px 2px grey;
+    color: white;
+
 }
 
 /* .column {
