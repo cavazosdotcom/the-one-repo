@@ -350,7 +350,7 @@ function renderCharacterData (charData, quoteData) {
     }
    
     var htmlTemplateString = `
-    <div class="box">
+    <div class="box char-width">
         <div class="char-flex">
             <div class="">
                 <h1 class="is-size-2">
@@ -415,7 +415,7 @@ function renderGiphy(gif, title) {
     var htmlTemplateImg = `
         <div class="box">
             <figure id="giphy">
-                <img class="width img-flex" src="${gif}" alt="${title}">
+                <img class="img-flex" src="${gif}" alt="${title}">
             </figure>
         </div>
     `;
