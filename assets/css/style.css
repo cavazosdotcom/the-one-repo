@@ -97,7 +97,6 @@ strong {
 .ui-autocomplete {
     max-height: 300px;
     overflow-y: auto;
-    /* prevent horizontal scrollbar */
     overflow-x: hidden;
 }
 
@@ -109,4 +108,27 @@ strong {
 
 .navbar-end {
     padding: 0px 30px 0px 0px;
+}
+
+a:hover {
+    color: #fe9d00;
+}
+
+#fav-button:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    transition:all .5s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.1);
+    transition:all .5s ease-in-out;
+}
+
+@media screen and (min-width: 769px){
+    .modal-card, .modal-content {
+        margin: 0 auto;
+        max-height: calc(100vh - 40px);
+        width: auto;
+    }
 }

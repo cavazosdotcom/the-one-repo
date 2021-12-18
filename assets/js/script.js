@@ -166,10 +166,11 @@ function renderMultiResultsModal(data) {
     $('#search-modal-content').html(`
                 <article class="message is-info">
                     <div class="message-header">
-                        <p>"is-info"</p>
+                        <p>Uh Oh!</p>
                         
                     </div>
                     <div class="message-body">
+                        <p>The character name you searched for has more than one result.<br>Please select the correct one:</p>
                         ${htmlTemplate}
                     </div>
                 </article>

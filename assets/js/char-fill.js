@@ -1,5 +1,6 @@
 var searchFormEl = $('#search-input')
 var characterFill = []
+var lotrApiKey = 'wamtzXv_h1XiQdZTQkoc'
 
 getAllCharData()
 
@@ -7,7 +8,7 @@ function getAllCharData () {
 
     var requestUrl = `https://the-one-api.dev/v2/character`;
     
-    var bearer = 'Bearer ' + "wamtzXv_h1XiQdZTQkoc";
+    var bearer = 'Bearer ' + lotrApiKey;
     
     fetch(requestUrl , {
         method: 'GET',
