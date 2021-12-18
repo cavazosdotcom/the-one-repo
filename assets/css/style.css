@@ -69,14 +69,6 @@ a {
     justify-content: space-evenly;
 }
 
-.justify-between {
-    justify-content: space-between;
-}
-
-.flex {
-    display:flex;
-}
-
 .margin {
     margin: 24px;
 }
@@ -99,4 +91,10 @@ a {
 
 strong {
     color: gold;
+}
+
+.char-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
