@@ -7,7 +7,8 @@ var giphyApiKey = "Pv2YHiUAl6VaFAsN816cOhgxrE28iBKF"
 var giphyLink;
 var favoriteCharacterList = []
 
-function TestsFunction() { TestsDiv.style.display = 'block' }
+// function TestsFunction() { TestsDiv.style.display = 'block' };
+
 // Form submission function
 function formSubmit(event){
     
@@ -287,33 +288,34 @@ function renderCharacterData (charData, quoteData) {
         
     }
     
-
+   
     var htmlTemplateString = `
-            <div class="columns is-align-items-center">
-                <div class="column">
-                    <h1 class="is-size-2">
-                        <strong>${charData.name}</strong> 
-                    </h1>
-                </div>
-                <div class="column has-text-right">
-                    <button id="fav-button">
-                        <img src="./assets/images/${favFilePath}" data-charname="${charData.name}">
-                    </button>
-                </div>
-            </div>         
-            <ul>
-                ${charInfoHtmlTemplate}
-            </ul>
-            <br>
-            <p>
-                "${randomQuote}"
-            </p>
-            
-            <br>
-            
-            <a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>
-                
-        `;
+    <div class="box">
+        <div class="columns is-align-items-center">
+            <div class="column">
+                <h1 class="is-size-2">
+                    <strong>${charData.name}</strong> 
+                </h1>
+            </div>
+            <div class="column has-text-right">
+                <button id="fav-button">
+                    <img src="./assets/images/${favFilePath}" data-charname="${charData.name}">
+                </button>
+            </div>
+        </div>         
+        <ul>
+            ${charInfoHtmlTemplate}
+        </ul>
+        <br>
+        <p>
+            "${randomQuote}"
+        </p>
+
+        <br>
+
+        <a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>        
+        </div>
+    `;
 
         $('#character-text').html(htmlTemplateString)
 
@@ -351,9 +353,11 @@ function favFileFinder(favList, characterName) {
 
 function renderGiphy(gif) {
     var htmlTemplateImg = `
-        <figure id="giphy">
-            <img src="${gif}" alt="Image">
-        </figure>
+        <div class="box">
+            <figure id="giphy">
+                <img class="width img-flex" src="${gif}" alt="Image">
+            </figure>
+        </div>
     `;
 
     
