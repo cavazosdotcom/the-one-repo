@@ -91,6 +91,12 @@ strong {
     color: gold;
 }
 
+.ui-autocomplete {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .char-flex {
     display: flex;
     justify-content: space-between;
@@ -99,6 +105,42 @@ strong {
 
 .navbar-end {
     padding: 0px 30px 0px 0px;
+}
+
+a:hover {
+    color: #fe9d00;
+}
+
+#fav-button:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    transition:all .5s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.1);
+    transition:all .5s ease-in-out;
+}
+
+@media screen and (min-width: 769px){
+    .modal-card, .modal-content {
+        margin: 0 auto;
+        max-height: calc(100vh - 40px);
+        width: auto;
+    }
+}
+
+.message.is-info .message-header {
+    background-color: rgb(51, 61, 60);
+}
+
+.message strong {
+    color: gold;
+}
+
+.message.is-info .message-body {
+    background-color: rgb(171, 175, 175);
+    color:white;
 }
 
 .navbar-burger {

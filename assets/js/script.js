@@ -158,7 +158,7 @@ function renderMultiResultsModal(data) {
         console.log(data.docs[i]._id)
         console.log(data.docs[i].name)
         htmlTemplate += `
-        <button class="button is-dark is-fullwidth m-1" data-arrayindex="${i}" data-id="${data.docs[i]._id}">${data.docs[i].name}</button>        
+        <button class="button is-danger is-focus is-fullwidth m-1" data-arrayindex="${i}" data-id="${data.docs[i]._id}">${data.docs[i].name}</button>        
             `;
     }
 
@@ -166,10 +166,11 @@ function renderMultiResultsModal(data) {
     $('#search-modal-content').html(`
                 <article class="message is-info">
                     <div class="message-header">
-                        <p>"is-info"</p>
+                        <p><strong>Uh Oh!</strong></p>
                         
                     </div>
                     <div class="message-body">
+                        <p>The character name you searched for has more than one result.<br>Please select the correct one:<br><br></p>
                         ${htmlTemplate}
                     </div>
                 </article>
@@ -274,7 +275,7 @@ function toggleFavoriteCharacter(event) {
     for (i=0; i < favoriteCharacterList.length; i++) {
         if (favoriteCharacterList[i] === characterName) {
             favoriteCharacterList.splice(i, 1)
-            console.log(favoriteCharacterList)
+            localStorage.setItem("favoriteCharacters", JSON.stringify(favoriteCharacterList));
             return renderFavorites(favoriteCharacterList)
         } 
     }
@@ -424,3 +425,8 @@ function renderGiphy(gif, title) {
     $('#giphy').html(htmlTemplateImg);
     console.log(title)
 };
+
+
+searchInputEl.autocomplete({
+    source: characterFill
+  });
