@@ -7,7 +7,7 @@ var giphyApiKey = "Pv2YHiUAl6VaFAsN816cOhgxrE28iBKF"
 
 var favoriteCharacterList = []
 
-// function TestsFunction() { TestsDiv.style.display = 'block' };
+// function TestsFunction() { TestsDiv.style.display = 'blockgit ' };
 
 // Form submission function
 function formSubmit(event){
