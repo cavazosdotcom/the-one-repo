@@ -4,7 +4,7 @@ var favoriteInputEl = $('#favorite-value')
 
 var lotrApiKey = "wamtzXv_h1XiQdZTQkoc"
 var giphyApiKey = "Pv2YHiUAl6VaFAsN816cOhgxrE28iBKF"
-var giphyLink;
+
 var favoriteCharacterList = []
 
 // function TestsFunction() { TestsDiv.style.display = 'block' };
@@ -163,9 +163,10 @@ function getGiphy(searchVal) {
         .then(function (data) {
             // console.log(ranNum);
             // console.log(data.data[ranNum].images.downsized.url);
-            giphyLink = data.data[ranNum].images.downsized.url;
+            var giphyLink = data.data[ranNum].images.downsized.url;
+            var giphyTitle = data.data[ranNum].title;
             console.log(data)
-            renderGiphy(giphyLink);
+            renderGiphy(giphyLink, giphyTitle);
         });
         } else {
             throw Error(response.statusText + ". We were not able to locate the character you searched for.");
@@ -351,15 +352,16 @@ function favFileFinder(favList, characterName) {
 
 
 
-function renderGiphy(gif) {
+function renderGiphy(gif, title) {
     var htmlTemplateImg = `
         <div class="box">
             <figure id="giphy">
-                <img class="width img-flex" src="${gif}" alt="Image">
+                <img class="width img-flex" src="${gif}" alt="${title}">
             </figure>
         </div>
     `;
 
     
     $('#giphy').html(htmlTemplateImg);
+    console.log(title)
 };
