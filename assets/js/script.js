@@ -8,6 +8,8 @@ var giphyLink;
 var favoriteCharacterList = []
 var favFilePath = "not-fav.png"
 
+var tempCharData = {}
+
 function TestsFunction() { TestsDiv.style.display = 'block' }
 // Form submission function
 function formSubmit(event){
@@ -63,6 +65,8 @@ function getCharacterData (searchVal) {
                 getCharacterQuotes(data.docs[0])
             } else if (data.docs.length > 1) {
                 renderMultiResultsModal(data)
+                tempCharData = data
+                console.log(tempCharData)
             }
             
         console.log(data);
@@ -85,6 +89,8 @@ function getCharacterData (searchVal) {
 };
 
 function getCharacterQuotes(charData){
+    console.log(charData)
+    console.log(charData._id)
     var requestUrl = `https://the-one-api.dev/v2/character/${charData._id}/quote`;
     
     var bearer = 'Bearer ' + lotrApiKey;
@@ -151,7 +157,7 @@ function renderMultiResultsModal(data) {
         console.log(data.docs[i]._id)
         console.log(data.docs[i].name)
         htmlTemplate += `
-        <button class="button is-dark is-fullwidth m-1" data-id="${data.docs[i]._id}">${data.docs[i].name}</button>        
+        <button class="button is-dark is-fullwidth m-1" data-arrayindex="${i}" data-id="${data.docs[i]._id}">${data.docs[i].name}</button>        
             `;
     }
 
@@ -168,13 +174,17 @@ function renderMultiResultsModal(data) {
                 </article>
                 `)
     modalToggle("search-result")
-    // <button class="delete" aria-label="delete"></button>
+    
     
 };
 
-// $('#search-modal-content').on('click', '[data-target]', modalToggle("search-result"))
-// $('#error-modal').on('click', modalToggle("error"))
+$('#search-modal-content').on('click', '[data-arrayindex]', function(){
+    
+    getGiphy(tempCharData.docs[this.dataset.arrayindex].name)
+    getCharacterQuotes(tempCharData.docs[this.dataset.arrayindex])
+    modalToggle("search-result")
 
+})
 
 function modalToggle(modalId){
     $(`#${modalId}-modal`).toggleClass('is-active')
@@ -182,15 +192,10 @@ function modalToggle(modalId){
 
 
 $( document.body)
-.on('click', '[data-target]', function(){
-    if (this.dataset.target === "error") {
-        modalToggle(this.dataset.target)
-    } else if (this.dataset.target === "search-result"){
-
-        modalToggle(this.dataset.target)
-    }
-    // modalToggle(this.dataset.target)
-    // $(`#${this.dataset.target}`).toggleClass('is-active')}
+    .on('click', '[data-target]', function(){
+        if (this.dataset.target === "error") {
+            modalToggle(this.dataset.target)
+        } 
 });
 
 
