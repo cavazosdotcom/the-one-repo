@@ -13,8 +13,8 @@ function TestsFunction() { TestsDiv.style.display = 'block' }
 function formSubmit(event){
     
     event.preventDefault()
-
-    if (searchInputEl.val()==="" && favoriteInputEl.val()==="") {
+    
+    if (searchInputEl.val()==="" && favoriteInputEl.val()===null) {
         console.log("Can you see this")
         renderErrorModal("Please enter a character name.", "is-info")
         return
@@ -58,7 +58,8 @@ function getCharacterData (searchVal) {
         if (response.ok) {
             return response.json()
         .then(function(data){
-        
+
+        renderMultiResultsModal(data)
         console.log(data);
         // console.log(data.docs[0].dataset['_id'])
         console.log(data.docs[0]._id)
@@ -139,11 +140,15 @@ function renderErrorModal(errorResponse, severity) {
     modalToggle()
 }
 
+function renderMultiResultsModal(data) {
+    console.log(data.docs)
+}
+
 function modalToggle(){
     $('.modal').toggleClass('is-active')
 }
 
-$('.modal').on('click', modalToggle)
+$('#error-modal').on('click', modalToggle)
 
 
 
