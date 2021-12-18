@@ -67,10 +67,30 @@ a {
     justify-content: space-evenly;
 }
 
+.justify-between {
+    justify-content: space-between;
+}
+
+.flex-end {
+    justify-content: flex-end;
+}
+
 .margin {
     margin: 24px;
 }
 
 .width {
     width: 30rem;
+}    
+
+#fav-button {
+    border: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+#fav-button img {
+    height:40px;
+    width:auto;
 }
