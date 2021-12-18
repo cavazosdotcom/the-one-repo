@@ -96,3 +96,7 @@ a {
     height:40px;
     width:auto;
 }
+
+strong {
+    color: gold;
+}
