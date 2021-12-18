@@ -83,6 +83,7 @@ a {
 
 .width {
     width: 30rem;
+    min-width: 23rem;
 }    
 
 #fav-button {
