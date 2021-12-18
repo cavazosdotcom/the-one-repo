@@ -4,13 +4,14 @@ var favoriteInputEl = $('#favorite-value')
 
 var lotrApiKey = "wamtzXv_h1XiQdZTQkoc"
 var giphyApiKey = "Pv2YHiUAl6VaFAsN816cOhgxrE28iBKF"
-var giphyLink;
+
 var favoriteCharacterList = []
 var favFilePath = "not-fav.png"
 
 var tempCharData = {}
 
-function TestsFunction() { TestsDiv.style.display = 'block' }
+// function TestsFunction() { TestsDiv.style.display = 'block' };
+
 // Form submission function
 function formSubmit(event){
     
@@ -214,9 +215,10 @@ function getGiphy(searchVal) {
         .then(function (data) {
             // console.log(ranNum);
             // console.log(data.data[ranNum].images.downsized.url);
-            giphyLink = data.data[ranNum].images.downsized.url;
+            var giphyLink = data.data[ranNum].images.downsized.url;
+            var giphyTitle = data.data[ranNum].title;
             console.log(data)
-            renderGiphy(giphyLink);
+            renderGiphy(giphyLink, giphyTitle);
         });
         } else {
             throw Error(response.statusText + ". We were not able to locate the character you searched for.");
@@ -341,33 +343,34 @@ function renderCharacterData (charData, quoteData) {
         
     }
     
-
+   
     var htmlTemplateString = `
-            <div class="columns is-align-items-center">
-                <div class="column">
-                    <h1 class="is-size-2">
-                        <strong>${charData.name}</strong> 
-                    </h1>
-                </div>
-                <div class="column has-text-right">
-                    <button id="fav-button">
-                        <img src="./assets/images/${favFilePath}" data-charname="${charData.name}">
-                    </button>
-                </div>
-            </div>         
-            <ul>
-                ${charInfoHtmlTemplate}
-            </ul>
-            <br>
-            <p>
-                "${randomQuote}"
-            </p>
-            
-            <br>
-            
-            <a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>
-                
-        `;
+    <div class="box">
+        <div class="columns is-align-items-center">
+            <div class="column">
+                <h1 class="is-size-2">
+                    <strong>${charData.name}</strong> 
+                </h1>
+            </div>
+            <div class="column has-text-right">
+                <button id="fav-button">
+                    <img src="./assets/images/${favFilePath}" data-charname="${charData.name}">
+                </button>
+            </div>
+        </div>         
+        <ul>
+            ${charInfoHtmlTemplate}
+        </ul>
+        <br>
+        <p>
+            "${randomQuote}"
+        </p>
+
+        <br>
+
+        <a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>        
+        </div>
+    `;
 
         $('#character-text').html(htmlTemplateString)
 
@@ -403,13 +406,16 @@ function favFileFinder(favList, characterName) {
 
 
 
-function renderGiphy(gif) {
+function renderGiphy(gif, title) {
     var htmlTemplateImg = `
-        <figure id="giphy">
-            <img src="${gif}" alt="Image">
-        </figure>
+        <div class="box">
+            <figure id="giphy">
+                <img class="width img-flex" src="${gif}" alt="${title}">
+            </figure>
+        </div>
     `;
 
     
     $('#giphy').html(htmlTemplateImg);
+    console.log(title)
 };
