@@ -72,7 +72,7 @@ function getCharacterData (searchVal) {
             
         console.log(data);
         // console.log(data.docs[0].dataset['_id'])
-        console.log(data.docs[0].wikiUrl)
+        // console.log(data.docs[0].wikiUrl)
         console.log(data.docs[0]._id)
         console.log(data.docs[0].name)
         // saveFavoriteCharacter(data.docs[0].name)
@@ -329,7 +329,7 @@ function renderCharacterData (charData, quoteData) {
     console.log(randomQuote)
     
     var charInfoHtmlTemplate = ""
-
+    var wikiUrlTemplate = ""
     for (const key in charData) {
         if (charData.hasOwnProperty(key)) {
             if(charData[key]==="" || key==="_id" || key==="name" || key==="wikiUrl" || charData[key]==="NaN") {
@@ -340,9 +340,14 @@ function renderCharacterData (charData, quoteData) {
             `            
             }
         }
-        
     }
-    
+
+    if (charData.hasOwnProperty("wikiUrl")){
+        wikiUrlTemplate = `<a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>`
+        console.log(charData.wikiUrl)
+    } else {
+        wikiUrlTemplate = ``
+    }
    
     var htmlTemplateString = `
     <div class="box">
@@ -368,10 +373,10 @@ function renderCharacterData (charData, quoteData) {
 
         <br>
 
-        <a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>        
+        ${wikiUrlTemplate}        
         </div>
     `;
-
+    
         $('#character-text').html(htmlTemplateString)
 
         $('#fav-button').on('click', toggleFavoriteCharacter)
