@@ -6,6 +6,9 @@ var lotrApiKey = "wamtzXv_h1XiQdZTQkoc"
 var giphyApiKey = "Pv2YHiUAl6VaFAsN816cOhgxrE28iBKF"
 
 var favoriteCharacterList = []
+var favFilePath = "not-fav.png"
+
+var tempCharData = {}
 
 // function TestsFunction() { TestsDiv.style.display = 'block' };
 
@@ -14,9 +17,9 @@ function formSubmit(event){
     
     event.preventDefault()
 
-    if (searchInputEl.val()==="" && favoriteInputEl.val()==="") {
+    if (searchInputEl.val()==="" && favoriteInputEl.val()===null) {
         console.log("Can you see this")
-        renderModal("Please enter a character name.", "is-info")
+        renderErrorModal("Please enter a character name.", "is-info")
         return
     } else if(searchInputEl.val()===""){
         getCharacterData(favoriteInputEl.val())
@@ -58,15 +61,22 @@ function getCharacterData (searchVal) {
         if (response.ok) {
             return response.json()
         .then(function(data){
-        
+            if (data.docs.length === 1) {
+                getGiphy(data.docs[0].name)
+                getCharacterQuotes(data.docs[0])
+            } else if (data.docs.length > 1) {
+                renderMultiResultsModal(data)
+                tempCharData = data
+                console.log(tempCharData)
+            }
+            
         console.log(data);
         // console.log(data.docs[0].dataset['_id'])
+        console.log(data.docs[0].wikiUrl)
         console.log(data.docs[0]._id)
         console.log(data.docs[0].name)
         // saveFavoriteCharacter(data.docs[0].name)
-        getGiphy(data.docs[0].name)
-        console.log(data.docs[0].wikiUrl)
-        getCharacterQuotes(data.docs[0])
+        
         
         })
         } else {
@@ -75,11 +85,13 @@ function getCharacterData (searchVal) {
         }
         })
         .catch(function (Error) {
-            renderModal(Error, "is-warning")
+            renderErrorModal(Error, "is-warning")
     });;
 };
 
 function getCharacterQuotes(charData){
+    console.log(charData)
+    console.log(charData._id)
     var requestUrl = `https://the-one-api.dev/v2/character/${charData._id}/quote`;
     
     var bearer = 'Bearer ' + lotrApiKey;
@@ -111,13 +123,13 @@ function getCharacterQuotes(charData){
         }
         })
         .catch(function (Error) {
-            renderModal(Error, "is-warning")
+            renderErrorModal(Error, "is-warning")
         });;
 }
 
 // Modal handler
-function renderModal(errorResponse, severity) {
-    console.log
+function renderErrorModal(errorResponse, severity) {
+    
     var modalType = ""
     if(severity === "is-warning"){
         modalType = "Warning"
@@ -125,7 +137,7 @@ function renderModal(errorResponse, severity) {
         modalType = "We need more information."
     }
 
-    $('.modal-content').html(`
+    $('#error-modal-content').html(`
                 <article class="message ${severity}">
                     <div class="message-header">
                         <p>${modalType}</p>
@@ -136,16 +148,56 @@ function renderModal(errorResponse, severity) {
                     </div>
                 </article>
                 `)
-    modalToggle()
+    modalToggle("error")
 }
 
-function modalToggle(){
-    $('.modal').toggleClass('is-active')
+function renderMultiResultsModal(data) {
+    
+    var htmlTemplate = ""
+    for (i=0; i < data.docs.length; i++) {
+        console.log(data.docs[i]._id)
+        console.log(data.docs[i].name)
+        htmlTemplate += `
+        <button class="button is-dark is-fullwidth m-1" data-arrayindex="${i}" data-id="${data.docs[i]._id}">${data.docs[i].name}</button>        
+            `;
+    }
+
+
+    $('#search-modal-content').html(`
+                <article class="message is-info">
+                    <div class="message-header">
+                        <p>"is-info"</p>
+                        
+                    </div>
+                    <div class="message-body">
+                        ${htmlTemplate}
+                    </div>
+                </article>
+                `)
+    modalToggle("search-result")
+    
+    
+};
+
+$('#search-modal-content').on('click', '[data-arrayindex]', function(){
+    
+    getGiphy(tempCharData.docs[this.dataset.arrayindex].name)
+    getCharacterQuotes(tempCharData.docs[this.dataset.arrayindex])
+    modalToggle("search-result")
+
+})
+
+function modalToggle(modalId){
+    $(`#${modalId}-modal`).toggleClass('is-active')
 }
 
-$('.modal').on('click', modalToggle)
 
-
+$( document.body)
+    .on('click', '[data-target]', function(){
+        if (this.dataset.target === "error") {
+            modalToggle(this.dataset.target)
+        } 
+});
 
 
 function getGiphy(searchVal) {
@@ -204,6 +256,8 @@ function init() {
     
     // If local storage favorite character values do not exist; set it as a blank array
     if (favoriteCharacterList===null) {
+        console.log(favoriteCharacterList)
+
         return favoriteCharacterList = []
     }
     
@@ -239,7 +293,7 @@ function toggleFavoriteCharacter(event) {
 function renderFavorites(favorites) {
     
     favoriteInputEl.html("")
-
+    
     htmlTemplateString = "";
     for(var i=0; i < favoriteCharacterList.length; i++) {
         
