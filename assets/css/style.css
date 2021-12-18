@@ -46,7 +46,7 @@ a {
 }
 
 .container {
-    background: #4169E1;
+    background: rgb(51, 61, 60);
     border-radius: 5px;
     padding: 20px;
     color: white;
@@ -67,14 +67,6 @@ a {
 
 .justify-evenly {
     justify-content: space-evenly;
-}
-
-.justify-between {
-    justify-content: space-between;
-}
-
-.flex {
-    display:flex;
 }
 
 .margin {
@@ -100,4 +92,10 @@ a {
 
 strong {
     color: gold;
+}
+
+.char-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
