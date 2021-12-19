@@ -18,23 +18,17 @@ function formSubmit(event){
     event.preventDefault()
 
     if (searchInputEl.val()==="" && favoriteInputEl.val()===null) {
-        console.log("Can you see this")
         renderErrorModal("Please enter a character name.", "is-info")
         return
     } else if(searchInputEl.val()===""){
         getCharacterData(favoriteInputEl.val())
-        // getGiphy(favoriteInputEl.val())
 
     } else if (favoriteInputEl.val()==="") {
         getCharacterData(searchInputEl.val().trim())
         favoriteInputEl.val("")
-        console.log()
-        // getGiphy(searchInputEl.val())
-        
     } else {
         getCharacterData(searchInputEl.val().trim())
         favoriteInputEl.val("")
-        // getGiphy(searchInputEl.val())
     }
     
     // clears out search input after form submission
@@ -67,17 +61,7 @@ function getCharacterData (searchVal) {
             } else if (data.docs.length > 1) {
                 renderMultiResultsModal(data)
                 tempCharData = data
-                console.log(tempCharData)
             }
-            
-        console.log(data);
-        // console.log(data.docs[0].dataset['_id'])
-        // console.log(data.docs[0].wikiUrl)
-        console.log(data.docs[0]._id)
-        console.log(data.docs[0].name)
-        // saveFavoriteCharacter(data.docs[0].name)
-        
-        
         })
         } else {
             
@@ -90,8 +74,7 @@ function getCharacterData (searchVal) {
 };
 
 function getCharacterQuotes(charData){
-    console.log(charData)
-    console.log(charData._id)
+    
     var requestUrl = `https://the-one-api.dev/v2/character/${charData._id}/quote`;
     
     var bearer = 'Bearer ' + lotrApiKey;
@@ -108,17 +91,9 @@ function getCharacterQuotes(charData){
         .then(function(data){
 
         renderCharacterData(charData , data)
-        // console.log(charData)
-        // console.log(charData._id)
-        // console.log(data);
-        // // console.log(data.docs[0].dataset['_id'])
-        // console.log(data.docs)
-        // console.log(data.docs.length)
-        // console.log(data.docs[0].dialog)
         
         })
         } else {
-            console.log(Error)
             throw Error(response.status + ": We were not able to locate the character's quotes.");
         }
         })
@@ -155,8 +130,7 @@ function renderMultiResultsModal(data) {
     
     var htmlTemplate = ""
     for (i=0; i < data.docs.length; i++) {
-        console.log(data.docs[i]._id)
-        console.log(data.docs[i].name)
+        
         htmlTemplate += `
         <button class="button is-danger is-focus is-fullwidth m-1" data-arrayindex="${i}" data-id="${data.docs[i]._id}">${data.docs[i].name}</button>        
             `;
@@ -203,9 +177,9 @@ $( document.body)
 
 function getGiphy(searchVal) {
 
-    // TODO: create random number generator between 0 and 50? for ranNum variable
+    // Create random number generator between 0 and 50? for ranNum variable
     var ranNum = Math.floor(Math.random() * 9);
-    console.log(ranNum);
+    
     var requestUrl = `https://api.giphy.com/v1/gifs/search?api_key=${giphyApiKey}&q=${searchVal}&offset=${ranNum}`;
    
     fetch(requestUrl)
@@ -214,11 +188,8 @@ function getGiphy(searchVal) {
             return response.json()
         
         .then(function (data) {
-            // console.log(ranNum);
-            // console.log(data.data[ranNum].images.downsized.url);
             var giphyLink = data.data[ranNum].images.downsized.url;
             var giphyTitle = data.data[ranNum].title;
-            console.log(data)
             renderGiphy(giphyLink, giphyTitle);
         });
         } else {
@@ -226,44 +197,12 @@ function getGiphy(searchVal) {
         }
         })
         .catch(function (Error) {
-            console.log(Error)
             // renderModal(Error, "is-warning")
         });;
 }
 
 
-// Event listener for search form submission
 
-searchFormEl.on('submit', formSubmit)
-
-$(document).ready(function() {
-
-    // Check for click events on the navbar burger icon
-    $(".navbar-burger").click(function() {
-  
-        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-        $(".navbar-burger").toggleClass("is-active");
-        $(".navbar-menu").toggleClass("is-active");
-  
-    });
-  });
-
-
-// Initial page load function to pull favorite characters from local storage
-function init() {
-
-    // This will parse the favorite character list array from local storage
-    favoriteCharacterList = JSON.parse(localStorage.getItem("favoriteCharacters"));
-    
-    // If local storage favorite character values do not exist; set it as a blank array
-    if (favoriteCharacterList===null) {
-        console.log(favoriteCharacterList)
-
-        return favoriteCharacterList = []
-    }
-    
-    renderFavorites(favoriteCharacterList)
-}
 
 // Function to save character as favorite to local storage
 
@@ -282,7 +221,7 @@ function toggleFavoriteCharacter(event) {
 
     // If character name is not saved to favorite character list, add it to array
     favoriteCharacterList = favoriteCharacterList.concat(characterName);
-    console.log(favoriteCharacterList)
+
     // Saving the updated favorite character array to local storage 
     localStorage.setItem("favoriteCharacters", JSON.stringify(favoriteCharacterList));
     renderFavorites(favoriteCharacterList)
@@ -308,14 +247,10 @@ function renderFavorites(favorites) {
     
 }
 
-init()
-
 
 function renderCharacterData (charData, quoteData) {
-    console.log(favoriteCharacterList)
     favFileFinder(favoriteCharacterList, charData.name)
-    console.log(charData)
-    console.log(quoteData)
+
     var randomQuote =""
     
     if (quoteData.total===0){
@@ -327,7 +262,6 @@ function renderCharacterData (charData, quoteData) {
     function getRandomIndex( length ) {
         return Math.floor(Math.random()*length);
     }
-    console.log(randomQuote)
     
     var charInfoHtmlTemplate = ""
     var wikiUrlTemplate = ""
@@ -345,7 +279,6 @@ function renderCharacterData (charData, quoteData) {
 
     if (charData.hasOwnProperty("wikiUrl")){
         wikiUrlTemplate = `<a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>`
-        console.log(charData.wikiUrl)
     } else {
         wikiUrlTemplate = ``
     }
@@ -423,10 +356,38 @@ function renderGiphy(gif, title) {
 
     
     $('#giphy').html(htmlTemplateImg);
-    console.log(title)
 };
 
 
 searchInputEl.autocomplete({
     source: characterFill
   });
+
+// Event listener for search form submission
+searchFormEl.on('submit', formSubmit)
+
+// This function handles navbar burger menu collapse/expand
+$(document).ready(function() {
+    // Check for click events on the navbar burger icon
+    $(".navbar-burger").click(function() {
+        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+        $(".navbar-burger").toggleClass("is-active");
+        $(".navbar-menu").toggleClass("is-active");
+    });
+});
+
+
+// Initial page load function to pull favorite characters from local storage
+function init() {
+
+    // This will parse the favorite character list array from local storage
+    favoriteCharacterList = JSON.parse(localStorage.getItem("favoriteCharacters"));
+    
+    // If local storage favorite character values do not exist; set it as a blank array
+    if (favoriteCharacterList===null) {
+        return favoriteCharacterList = []
+    }
+    renderFavorites(favoriteCharacterList)
+}
+
+init()
