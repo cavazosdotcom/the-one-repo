@@ -1,108 +1,168 @@
-var searchFormEl = $('#search-input')
-var searchInputEl = $('#search-value')
-var favoriteInputEl = $('#favorite-value')
+// Selecting on page elements we will be interacting with.
+var searchFormEl = $( '#search-input' );
+var searchInputEl = $( '#search-value' );
+var favoriteInputEl = $( '#favorite-value' );
 
-var lotrApiKey = "wamtzXv_h1XiQdZTQkoc"
-var giphyApiKey = "Pv2YHiUAl6VaFAsN816cOhgxrE28iBKF"
-
-var favoriteCharacterList = []
-var favFilePath = "not-fav.png"
-
-var tempCharData = {}
-
-// function TestsFunction() { TestsDiv.style.display = 'block' };
+// Global variables.
+var lotrApiKey = "wamtzXv_h1XiQdZTQkoc";
+var giphyApiKey = "Pv2YHiUAl6VaFAsN816cOhgxrE28iBKF";
+var favoriteCharacterList = [];
+var favFilePath = "not-fav.png";
+var tempCharData = {};
 
 // Form submission function
-function formSubmit(event){
-    
-    event.preventDefault()
+function formSubmit ( event ){
+    // Prevents default form submission behavior to reload page.
+    event.preventDefault();
 
-    if (searchInputEl.val()==="" && favoriteInputEl.val()===null) {
-        renderErrorModal("Please enter a character name.", "is-info")
-        return
-    } else if(searchInputEl.val()===""){
-        getCharacterData(favoriteInputEl.val())
-
-    } else if (favoriteInputEl.val()==="") {
-        getCharacterData(searchInputEl.val().trim())
-        favoriteInputEl.val("")
+    /*
+    // Conditional logic to determine which search value we are fetching character data from.
+    // If both search input and favorite character input is blank, render modal informing user.
+    // If only search input is blank, use favorite character selection.
+    // If favorite character input is blank, use search input value.
+    // If both search input and favorite character input are have values, use the search input value.
+    */
+    if ( searchInputEl.val() === "" && favoriteInputEl.val() === null ) {
+        return renderErrorModal ( "Please enter a character name." , "is-info" );
+    } else if ( searchInputEl.val() === "" ) {
+        getCharacterData ( favoriteInputEl.val() );
+    } else if ( favoriteInputEl.val() === "" ) {
+        getCharacterData ( searchInputEl.val().trim() );
+        favoriteInputEl.val ( "" );
     } else {
-        getCharacterData(searchInputEl.val().trim())
-        favoriteInputEl.val("")
-    }
-    
-    // clears out search input after form submission
-    searchInputEl.val("")
-    // favoriteInputEl.val("")
-}
+        getCharacterData ( searchInputEl.val().trim() );
+        favoriteInputEl.val ( "" );
+    };
 
+    // clears out search input after form submission.
+    searchInputEl.val ( "" );
+};
 
-// Fetch request
+// Fetch Character data from Lord of the Rings character endpoint based off search value.
+function getCharacterData ( searchVal ) {
 
-function getCharacterData (searchVal) {
-
+    // API Request URL and Bearer token.
     var requestUrl = `https://the-one-api.dev/v2/character?name=/${searchVal}/i`;
-    
     var bearer = 'Bearer ' + lotrApiKey;
     
-    fetch(requestUrl , {
+    // Fetch request.
+    fetch ( requestUrl , {
         method: 'GET',
         headers: {
             'Authorization': bearer,
             'Content-Type': 'application/json'
         }})
-        .then(function (response) {
-        if (response.ok) {
+        .then( function ( response ) {
+        if ( response.ok ) {
             return response.json()
-        .then(function(data){
-            if (data.docs.length === 1) {
-                getGiphy(data.docs[0].name)
-                getCharacterQuotes(data.docs[0])
+        .then( function( data ){
+            // If only one character is returned, go fetch giphy gif and character quotes.
+            if ( data.docs.length === 1 ) {
+                getGiphy ( data.docs[0].name );
+                getCharacterQuotes ( data.docs[0] );
             } else if (data.docs.length > 1) {
-                renderMultiResultsModal(data)
-                tempCharData = data
+                // If more than one character is returned, render multiple results modal and store character data temporarily in an object for later use.
+                renderMultiResultsModal ( data );
+                tempCharData = data;
             }
         })
         } else {
             
-            throw Error(response.status + ": We were not able to locate the character you searched for.");
+            throw Error( response.status + ": We were not able to locate the character you searched for." );
         }
         })
-        .catch(function (Error) {
-            renderErrorModal(Error, "is-warning")
-    });;
+        .catch(function ( Error ) {
+            renderErrorModal ( Error, "is-warning" );
+    });
 };
 
-function getCharacterQuotes(charData){
+// Fetch Character quote data from Lord of the Rings quote endpoint based off returned character.
+function getCharacterQuotes ( charData ) {
     
+    // API Request URL and Bearer token.
     var requestUrl = `https://the-one-api.dev/v2/character/${charData._id}/quote`;
-    
     var bearer = 'Bearer ' + lotrApiKey;
     
-    fetch(requestUrl , {
+    // Fetch request.
+    fetch( requestUrl , {
         method: 'GET',
         headers: {
             'Authorization': bearer,
             'Content-Type': 'application/json'
         }})
-        .then(function (response) {
-        if (response.ok) {
+        .then( function ( response ) {
+        if ( response.ok ) {
             return response.json()
-        .then(function(data){
-
-        renderCharacterData(charData , data)
-        
+        .then( function ( data ){
+            // Render Character card using both the character data and quote data.
+            renderCharacterData ( charData , data );
         })
         } else {
-            throw Error(response.status + ": We were not able to locate the character's quotes.");
+            throw Error( response.status + ": We were not able to locate the character's quotes." );
         }
         })
-        .catch(function (Error) {
-            renderErrorModal(Error, "is-warning")
-        });;
-}
+        .catch( function ( Error ) {
+            renderErrorModal( Error, "is-warning" );
+        });
+};
 
-// Modal handler
+function getGiphy ( searchVal ) {
+
+    // Create random number generator between 0 and 50? for ranNum variable.
+    var ranNum = Math.floor( Math.random() * 9 );
+    
+    // API Request URL.
+    var requestUrl = `https://api.giphy.com/v1/gifs/search?api_key=${giphyApiKey}&q=${searchVal}&offset=${ranNum}`;
+   
+    // Fetch Request.
+    fetch( requestUrl )
+        .then(function ( response ) {
+        if ( response.ok ) {
+            return response.json()
+        
+        .then( function ( data ) {
+            var giphyLink = data.data[ranNum].images.downsized.url;
+            var giphyTitle = data.data[ranNum].title;
+            renderGiphy ( giphyLink, giphyTitle );
+        });
+        } else {
+            throw Error( response.statusText + ". We were not able to locate the character you searched for." );
+        }
+        })
+        .catch( function ( Error ) {
+            renderModal ( Error, "is-warning" );
+        });
+};
+
+// When More than one character is returned for a character search, this function will print buttons for each character name returned in a modal.
+function renderMultiResultsModal ( data ) {
+    
+    var htmlTemplate = "";
+    // For loop to create buttons for each character name returned.
+    for ( i=0; i < data.docs.length; i++ ) { 
+        htmlTemplate += `
+            <button class="button is-danger is-focus is-fullwidth m-1" data-arrayindex="${i}" data-id="${data.docs[i]._id}">${data.docs[i].name}</button>        
+        `;
+    }
+
+    // Appending character buttons and modal contents into the specific multi results character modal.
+    $('#search-modal-content').html(`
+        <article class="message is-info">
+            <div class="message-header">
+                <p><strong>Uh Oh!</strong></p>
+            </div>
+            <div class="message-body">
+                <p>The character name you searched for has more than one result.<br>Please select the correct one:<br><br></p>
+                ${htmlTemplate}
+            </div>
+        </article>
+    `);
+    
+    // Toggle multi results character modal.
+    modalToggle("search-result");
+};
+
+// Error modal handler
 function renderErrorModal(errorResponse, severity) {
     
     var modalType = ""
@@ -126,34 +186,12 @@ function renderErrorModal(errorResponse, severity) {
     modalToggle("error")
 }
 
-function renderMultiResultsModal(data) {
-    
-    var htmlTemplate = ""
-    for (i=0; i < data.docs.length; i++) {
-        
-        htmlTemplate += `
-        <button class="button is-danger is-focus is-fullwidth m-1" data-arrayindex="${i}" data-id="${data.docs[i]._id}">${data.docs[i].name}</button>        
-            `;
-    }
+// Toggles modal with is-active class to handle displaying and hiding a modal.
+function modalToggle(modalId){
+    $(`#${modalId}-modal`).toggleClass('is-active')
+}
 
-
-    $('#search-modal-content').html(`
-                <article class="message is-info">
-                    <div class="message-header">
-                        <p><strong>Uh Oh!</strong></p>
-                        
-                    </div>
-                    <div class="message-body">
-                        <p>The character name you searched for has more than one result.<br>Please select the correct one:<br><br></p>
-                        ${htmlTemplate}
-                    </div>
-                </article>
-                `)
-    modalToggle("search-result")
-    
-    
-};
-
+// Event listener added to multi results modal buttons which accesses the temporary character data object we stored character data in.
 $('#search-modal-content').on('click', '[data-arrayindex]', function(){
     
     getGiphy(tempCharData.docs[this.dataset.arrayindex].name)
@@ -161,11 +199,6 @@ $('#search-modal-content').on('click', '[data-arrayindex]', function(){
     modalToggle("search-result")
 
 })
-
-function modalToggle(modalId){
-    $(`#${modalId}-modal`).toggleClass('is-active')
-}
-
 
 $( document.body)
     .on('click', '[data-target]', function(){
@@ -175,31 +208,7 @@ $( document.body)
 });
 
 
-function getGiphy(searchVal) {
 
-    // Create random number generator between 0 and 50? for ranNum variable
-    var ranNum = Math.floor(Math.random() * 9);
-    
-    var requestUrl = `https://api.giphy.com/v1/gifs/search?api_key=${giphyApiKey}&q=${searchVal}&offset=${ranNum}`;
-   
-    fetch(requestUrl)
-        .then(function (response) {
-        if (response.ok) {
-            return response.json()
-        
-        .then(function (data) {
-            var giphyLink = data.data[ranNum].images.downsized.url;
-            var giphyTitle = data.data[ranNum].title;
-            renderGiphy(giphyLink, giphyTitle);
-        });
-        } else {
-            throw Error(response.statusText + ". We were not able to locate the character you searched for.");
-        }
-        })
-        .catch(function (Error) {
-            // renderModal(Error, "is-warning")
-        });;
-}
 
 
 
@@ -215,6 +224,7 @@ function toggleFavoriteCharacter(event) {
         if (favoriteCharacterList[i] === characterName) {
             favoriteCharacterList.splice(i, 1)
             localStorage.setItem("favoriteCharacters", JSON.stringify(favoriteCharacterList));
+            favoriteInputEl.val("")
             return renderFavorites(favoriteCharacterList)
         } 
     }
