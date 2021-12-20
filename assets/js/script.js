@@ -11,7 +11,7 @@ var favFilePath = "not-fav.png";
 var tempCharData = {};
 
 // Form submission function
-function formSubmit ( event ){
+function formSubmit( event ){
     // Prevents default form submission behavior to reload page.
     event.preventDefault();
 
@@ -23,46 +23,46 @@ function formSubmit ( event ){
     // If both search input and favorite character input are have values, use the search input value.
     */
     if ( searchInputEl.val() === "" && favoriteInputEl.val() === null ) {
-        return renderErrorModal ( "Please enter a character name." , "is-info" );
+        return renderErrorModal( "Please enter a character name." , "is-info" );
     } else if ( searchInputEl.val() === "" ) {
-        getCharacterData ( favoriteInputEl.val() );
+        getCharacterData( favoriteInputEl.val() );
     } else if ( favoriteInputEl.val() === "" ) {
-        getCharacterData ( searchInputEl.val().trim() );
-        favoriteInputEl.val ( "" );
+        getCharacterData( searchInputEl.val().trim() );
+        favoriteInputEl.val( "" );
     } else {
-        getCharacterData ( searchInputEl.val().trim() );
-        favoriteInputEl.val ( "" );
+        getCharacterData( searchInputEl.val().trim() );
+        favoriteInputEl.val( "" );
     };
 
     // clears out search input after form submission.
-    searchInputEl.val ( "" );
+    searchInputEl.val( "" );
 };
 
 // Fetch Character data from Lord of the Rings character endpoint based off search value.
-function getCharacterData ( searchVal ) {
+function getCharacterData( searchVal ) {
 
     // API Request URL and Bearer token.
     var requestUrl = `https://the-one-api.dev/v2/character?name=/${searchVal}/i`;
     var bearer = 'Bearer ' + lotrApiKey;
     
     // Fetch request.
-    fetch ( requestUrl , {
+    fetch( requestUrl , {
         method: 'GET',
         headers: {
             'Authorization': bearer,
             'Content-Type': 'application/json'
         }})
-        .then( function ( response ) {
+        .then( function( response ) {
         if ( response.ok ) {
             return response.json()
         .then( function( data ){
             // If only one character is returned, go fetch giphy gif and character quotes.
             if ( data.docs.length === 1 ) {
-                getGiphy ( data.docs[0].name );
-                getCharacterQuotes ( data.docs[0] );
+                getGiphy( data.docs[0].name );
+                getCharacterQuotes( data.docs[0] );
             } else if (data.docs.length > 1) {
                 // If more than one character is returned, render multiple results modal and store character data temporarily in an object for later use.
-                renderMultiResultsModal ( data );
+                renderMultiResultsModal( data );
                 tempCharData = data;
             }
         })
@@ -71,13 +71,13 @@ function getCharacterData ( searchVal ) {
             throw Error( response.status + ": We were not able to locate the character you searched for." );
         }
         })
-        .catch(function ( Error ) {
-            renderErrorModal ( Error, "is-warning" );
+        .catch(function( Error ) {
+            renderErrorModal( Error, "is-warning" );
     });
 };
 
 // Fetch Character quote data from Lord of the Rings quote endpoint based off returned character.
-function getCharacterQuotes ( charData ) {
+function getCharacterQuotes( charData ) {
     
     // API Request URL and Bearer token.
     var requestUrl = `https://the-one-api.dev/v2/character/${charData._id}/quote`;
@@ -90,63 +90,67 @@ function getCharacterQuotes ( charData ) {
             'Authorization': bearer,
             'Content-Type': 'application/json'
         }})
-        .then( function ( response ) {
+        .then( function( response ) {
         if ( response.ok ) {
             return response.json()
-        .then( function ( data ){
+        .then( function( data ){
             // Render Character card using both the character data and quote data.
-            renderCharacterData ( charData , data );
+            renderCharacterData( charData , data );
         })
         } else {
             throw Error( response.status + ": We were not able to locate the character's quotes." );
         }
         })
-        .catch( function ( Error ) {
+        .catch( function( Error ) {
             renderErrorModal( Error, "is-warning" );
         });
 };
 
-function getGiphy ( searchVal ) {
+function getGiphy( searchVal ) {
 
-    // Create random number generator between 0 and 50? for ranNum variable.
-    var ranNum = Math.floor( Math.random() * 9 );
+    /*
+    // Create random number generator between 0-9 to select a random gif. 
+    // Constraining API request to select a gif from the top 10 results to filter out unrelated gifs. 
+    // The higher the number the more likely to have an unrelated gif.
+    */
+    var ranNum = getRandomIndex( 9 );
     
     // API Request URL.
     var requestUrl = `https://api.giphy.com/v1/gifs/search?api_key=${giphyApiKey}&q=${searchVal}&offset=${ranNum}`;
    
     // Fetch Request.
     fetch( requestUrl )
-        .then(function ( response ) {
+        .then(function( response ) {
         if ( response.ok ) {
             return response.json()
         
-        .then( function ( data ) {
+        .then( function( data ) {
             var giphyLink = data.data[ranNum].images.downsized.url;
             var giphyTitle = data.data[ranNum].title;
-            renderGiphy ( giphyLink, giphyTitle );
+            renderGiphy( giphyLink, giphyTitle );
         });
         } else {
             throw Error( response.statusText + ". We were not able to locate the character you searched for." );
         }
         })
-        .catch( function ( Error ) {
-            renderModal ( Error, "is-warning" );
+        .catch( function( Error ) {
+            renderModal( Error, "is-warning" );
         });
 };
 
 // When More than one character is returned for a character search, this function will print buttons for each character name returned in a modal.
-function renderMultiResultsModal ( data ) {
+function renderMultiResultsModal( data ) {
     
     var htmlTemplate = "";
     // For loop to create buttons for each character name returned.
-    for ( i=0; i < data.docs.length; i++ ) { 
+    for ( let i=0; i < data.docs.length; i++ ) { 
         htmlTemplate += `
             <button class="button is-danger is-focus is-fullwidth m-1" data-arrayindex="${i}" data-id="${data.docs[i]._id}">${data.docs[i].name}</button>        
         `;
     }
 
     // Appending character buttons and modal contents into the specific multi results character modal.
-    $('#search-modal-content').html(`
+    $( '#search-modal-content' ).html(`
         <article class="message is-info">
             <div class="message-header">
                 <p><strong>Uh Oh!</strong></p>
@@ -159,140 +163,143 @@ function renderMultiResultsModal ( data ) {
     `);
     
     // Toggle multi results character modal.
-    modalToggle("search-result");
+    modalToggle( "search-result" );
 };
 
-// Error modal handler
-function renderErrorModal(errorResponse, severity) {
+// Function to handle rendering error modal.
+function renderErrorModal( errorResponse , severity ) {
     
-    var modalType = ""
-    if(severity === "is-warning"){
-        modalType = "Warning"
+    // Modal type and conditional logic determines what the Modal Header/title will display as, "Need more info" or Warning message from failed fetch request.
+    var modalType = "";
+    if( severity === "is-warning" ){
+        modalType = "Warning";
     } else {
-        modalType = "We need more information."
-    }
+        modalType = "We need more information.";
+    };
 
-    $('#error-modal-content').html(`
-                <article class="message ${severity}">
-                    <div class="message-header">
-                        <p>${modalType}</p>
-                        <button class="delete" aria-label="delete"></button>
-                    </div>
-                    <div class="message-body">
-                        ${errorResponse}
-                    </div>
-                </article>
-                `)
-    modalToggle("error")
-}
+    // Adding error information to error modal container.
+    $( '#error-modal-content' ).html(`
+        <article class="message ${severity}">
+            <div class="message-header">
+                <p>${modalType}</p>
+                <button class="delete" aria-label="delete"></button>
+            </div>
+            <div class="message-body">
+                ${errorResponse}
+            </div>
+        </article>
+    `);
+
+    // Toggles error modal
+    modalToggle( "error" );
+};
 
 // Toggles modal with is-active class to handle displaying and hiding a modal.
-function modalToggle(modalId){
-    $(`#${modalId}-modal`).toggleClass('is-active')
-}
+function modalToggle( modalId ){
+    $( `#${modalId}-modal` ).toggleClass( 'is-active' );
+};
 
-// Event listener added to multi results modal buttons which accesses the temporary character data object we stored character data in.
-$('#search-modal-content').on('click', '[data-arrayindex]', function(){
+
+// Function to save character as favorite to local storage;
+function toggleFavoriteCharacter( event ) {
     
-    getGiphy(tempCharData.docs[this.dataset.arrayindex].name)
-    getCharacterQuotes(tempCharData.docs[this.dataset.arrayindex])
-    modalToggle("search-result")
-
-})
-
-$( document.body)
-    .on('click', '[data-target]', function(){
-        if (this.dataset.target === "error") {
-            modalToggle(this.dataset.target)
-        } 
-});
-
-
-
-
-
-
-
-// Function to save character as favorite to local storage
-
-function toggleFavoriteCharacter(event) {
-    favButtonToggle(event)
-        
-    var characterName = event.target.dataset.charname
+    // Toggles the favorite button icon
+    favButtonToggle( event );
     
-    for (i=0; i < favoriteCharacterList.length; i++) {
-        if (favoriteCharacterList[i] === characterName) {
-            favoriteCharacterList.splice(i, 1)
-            localStorage.setItem("favoriteCharacters", JSON.stringify(favoriteCharacterList));
-            favoriteInputEl.val("")
-            return renderFavorites(favoriteCharacterList)
-        } 
-    }
+    var characterName = event.target.dataset.charname;
 
-    // If character name is not saved to favorite character list, add it to array
-    favoriteCharacterList = favoriteCharacterList.concat(characterName);
+    /*
+    // For loop to check if character is already on favorites list.
+    // If they are remove them from the array, save local storage with new favorite character list.
+    // Then re-render the favorite character list. 
+    */
+    for ( let i=0; i < favoriteCharacterList.length; i++ ) {
+        if ( favoriteCharacterList[i] === characterName ) {
+            favoriteCharacterList.splice( i , 1 );
+            localStorage.setItem( "favoriteCharacters" , JSON.stringify( favoriteCharacterList ));
+            favoriteInputEl.val("");
+            return renderFavorites( favoriteCharacterList );
+        };
+    };
 
-    // Saving the updated favorite character array to local storage 
-    localStorage.setItem("favoriteCharacters", JSON.stringify(favoriteCharacterList));
-    renderFavorites(favoriteCharacterList)
-}
+    // If character name is not already saved to favorite character list, add it to array.
+    favoriteCharacterList = favoriteCharacterList.concat( characterName );
+
+    // Saving the updated favorite character array to local storage.
+    localStorage.setItem( "favoriteCharacters" , JSON.stringify( favoriteCharacterList ));
+    // Render favorite character list with the new favorite character list.
+    renderFavorites( favoriteCharacterList );
+};
 
 
-// Function to render favorite characters to drop down
-
-function renderFavorites(favorites) {
+// Function to render favorite characters to drop down.
+function renderFavorites( favorites ) {
     
-    favoriteInputEl.html("")
-    
+    // Resets favorite character drop down contents before we re-print the favorite character options.
+    favoriteInputEl.html("");
     htmlTemplateString = "";
-    for(var i=0; i < favoriteCharacterList.length; i++) {
-        
-        //Template literal which will print out a favorite character option for each character saved within the localstorage array
+
+    //Template literal which will print out a favorite character option for each character saved within the localstorage array.
+    for ( let i=0; i < favoriteCharacterList.length; i++ ) {
         htmlTemplateString += `
-        <option>${favorites[i]}</option>
+            <option>${favorites[i]}</option>
         `; 
-    }
+    };
 
-    favoriteInputEl.html(`${htmlTemplateString}`) 
+    // Adds template literal to favorite character dropdown.
+    favoriteInputEl.html( `${htmlTemplateString}` );
+};
+
+// Function to render character data onto page using both character data and quote data.
+function renderCharacterData ( charData , quoteData ) {
+
+    // Determines whether the character we are rendering is a favorite or non-favorite character.
+    favFileFinder( favoriteCharacterList , charData.name );
     
-}
-
-
-function renderCharacterData (charData, quoteData) {
-    favFileFinder(favoriteCharacterList, charData.name)
-
-    var randomQuote =""
-    
-    if (quoteData.total===0){
-        randomQuote = "This character has no known quotes in the movies."
+    /*
+    // Logic to determine a random quote.
+    // If the character selected has no quotes, let the user know that.
+    // Otherwise select a random quote from quote data.
+    */
+    var randomQuote ="";
+    if ( quoteData.total === 0 ) {
+        randomQuote = "This character has no known quotes in the movies.";
     } else {
-     randomQuote = quoteData.docs[getRandomIndex(quoteData.docs.length)].dialog
-    }
+        randomQuote = quoteData.docs[getRandomIndex(quoteData.docs.length)].dialog;
+    };
 
-    function getRandomIndex( length ) {
-        return Math.floor(Math.random()*length);
-    }
-    
-    var charInfoHtmlTemplate = ""
-    var wikiUrlTemplate = ""
-    for (const key in charData) {
-        if (charData.hasOwnProperty(key)) {
-            if(charData[key]==="" || key==="_id" || key==="name" || key==="wikiUrl" || charData[key]==="NaN") {
-                // do nothing if key has blank value, is the id, or name   
+    /*
+    // Logic to print character data to a list.
+    // For loop will loop through each character object's keys.
+    // The following keys will not be printed to the list: Name, _id, wikiURL, and any character key that has a blank value or "NaN" value.
+    // Otherwise the loop will add the information to an unordered list.
+    */
+    var charInfoHtmlTemplate = "";
+    for ( const key in charData ) {
+        if ( charData.hasOwnProperty(key) ) {
+            if( charData[key] === "" || key === "_id" || key === "name" || key === "wikiUrl" || charData[key] === "NaN" ) {
+                // Do nothing if key has blank value, is the id, or name.
             } else {
-            charInfoHtmlTemplate += `
-            <li><strong>${capitalizeFirstLetter(key)}:</strong> ${charData[key]}</li>
-            `            
-            }
-        }
-    }
+                charInfoHtmlTemplate += `
+                    <li><strong>${capitalizeFirstLetter(key)}:</strong> ${charData[key]}</li>
+                `;
+            };
+        };
+    };
 
-    if (charData.hasOwnProperty("wikiUrl")){
-        wikiUrlTemplate = `<a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>`
+    /*
+    // Logic to handle rendering the wiki URL.
+    // If condition to check if character has a wiki Url, if they do add it to an anchor tag template literal.
+    // If the character does not have a wiki URL (small minor offshoot characters), the anchor tag template literal will be blank. 
+    */
+    var wikiUrlTemplate = "";
+    if ( charData.hasOwnProperty( "wikiUrl" ) ) {
+        wikiUrlTemplate = `<a href="${charData.wikiUrl}" target="_blank">LOTR Wiki Article</a>`;
     } else {
-        wikiUrlTemplate = ``
-    }
+        wikiUrlTemplate = ``;
+    };
    
+    // Template literal combining all other template literals to print character data to page.
     var htmlTemplateString = `
         <div class="box char-width">
             <div class="char-flex">
@@ -314,48 +321,20 @@ function renderCharacterData (charData, quoteData) {
             <p>
                 "${randomQuote}"
             </p>
-
             <br>
-
             ${wikiUrlTemplate}        
         </div>
     `;
     
-        $('#character-text').html(htmlTemplateString)
+    // Appends the character data template literal to character-text container.
+    $( '#character-text' ).html( htmlTemplateString );
 
-        $('#fav-button').on('click', toggleFavoriteCharacter)
-    }
-    
+    // Add event listener for rendered character data favorite button.
+    $( '#fav-button' ).on( 'click', toggleFavoriteCharacter );
+};
 
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function favButtonToggle (event) {
-    
-    if (event.target.getAttribute("src") == "./assets/images/not-fav.png") {
-        $(event.target).attr("src", "./assets/images/fav.png")
-        return
-    } else {
-        $(event.target).attr("src", "./assets/images/not-fav.png")
-    }
-
-}
-
-function favFileFinder(favList, characterName) {
-    for (i=0; i < favList.length; i++) {
-        if (favList[i] === characterName) {
-            favFilePath= "fav.png"
-            return favFilePath
-        } else {favFilePath ="not-fav.png"}
-
-    }
-    return favFilePath
-}
-
-
-
-function renderGiphy(gif, title) {
+// Function that renders giphy gif to giphy container.
+function renderGiphy( gif, title ) {
     var htmlTemplateImg = `
         <div class="box">
             <figure id="giphy">
@@ -364,40 +343,91 @@ function renderGiphy(gif, title) {
         </div>
     `;
 
-    
     $('#giphy').html(htmlTemplateImg);
 };
 
+// Function to return a random number to select a random index from array.
+function getRandomIndex( length ) {
+    return Math.floor( Math.random()*length );
+};
 
+// Function to capitalize the first letter of a word.
+function capitalizeFirstLetter( string ) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+// Function to swap icon between fav.png and not-fav.png.
+function favButtonToggle( event ) {
+    
+    if ( event.target.getAttribute("src") == "./assets/images/not-fav.png" ) {
+        return $(event.target).attr("src", "./assets/images/fav.png");
+    } else {
+        return $(event.target).attr("src", "./assets/images/not-fav.png");
+    };
+};
+
+// Function to determine to display fav.png or not-fav.png icon for the favorite button.
+function favFileFinder( favList, characterName ) {
+    for ( let i=0; i < favList.length; i++ ) {
+        if ( favList[i] === characterName ) {
+            favFilePath = "fav.png";
+            return favFilePath;
+        } else {
+            favFilePath = "not-fav.png";
+        };
+    };
+    return favFilePath;
+};
+
+// JqueryUI method to autofill based off the characterFill array from char-fill.js.
 searchInputEl.autocomplete({
     source: characterFill
-  });
+});
 
-// Event listener for search form submission
-searchFormEl.on('submit', formSubmit)
+// Event listener for search form submission.
+searchFormEl.on( 'submit' , formSubmit );
 
-// This function handles navbar burger menu collapse/expand
+// This function handles navbar burger menu collapse/expand.
 $(document).ready(function() {
-    // Check for click events on the navbar burger icon
+    // Check for click events on the navbar burger icon.
     $(".navbar-burger").click(function() {
-        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu".
         $(".navbar-burger").toggleClass("is-active");
         $(".navbar-menu").toggleClass("is-active");
     });
 });
 
+// Event listener added to multi results modal buttons which accesses the temporary character data object we stored character data in.
+$('#search-modal-content').on( 'click' , '[data-arrayindex]' , function() {
+    
+    // Handle fetch requests for giphy and character quotes based off the values from our stored temporary character data object.
+    getGiphy( tempCharData.docs[this.dataset.arrayindex].name );
+    getCharacterQuotes( tempCharData.docs[this.dataset.arrayindex] );
+    modalToggle( "search-result" );
 
-// Initial page load function to pull favorite characters from local storage
+});
+
+// Event listener for error modal to handle closing the modal.
+$(document.body)
+    .on( 'click' , '[data-target]' , function(){
+        if ( this.dataset.target === "error" ) {
+            modalToggle( this.dataset.target );
+        };
+});
+
+
+// Initial page load function to pull favorite characters from local storage.
 function init() {
 
-    // This will parse the favorite character list array from local storage
+    // This will parse the favorite character list array from local storage.
     favoriteCharacterList = JSON.parse(localStorage.getItem("favoriteCharacters"));
     
-    // If local storage favorite character values do not exist; set it as a blank array
-    if (favoriteCharacterList===null) {
-        return favoriteCharacterList = []
-    }
-    renderFavorites(favoriteCharacterList)
-}
+    // If local storage favorite character values do not exist; set it as a blank array.
+    if ( favoriteCharacterList === null ) {
+        return favoriteCharacterList = [];
+    };
+    renderFavorites( favoriteCharacterList );
+};
 
-init()
+// Calling the initial page load function.
+init();
