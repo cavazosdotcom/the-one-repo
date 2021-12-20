@@ -10,6 +10,11 @@ a {
     color:inherit;
 }
 
+strong {
+    color: gold;
+}
+
+/* Navbar styling */
 .navbar-brand {
     padding: 0px 0px 0px 60px;
 }
@@ -18,15 +23,37 @@ a {
     padding: 0px 0px 0px 100px;
 }
 
+.navbar-end {
+    padding: 0px 30px 0px 0px;
+}
+
+.navbar-burger {
+    color: #4a4a4a;
+    cursor: pointer;
+    position: relative;
+    width: 3.25rem;
+    margin-left: auto;
+    height: auto;
+}
+
+/* Search input element styling */
+.field {
+    border-radius: 10px;
+}
+
 .label {
     padding: 5px 0px 0px 0px;
     color: white;
 }
 
-.field {
-    border-radius: 10px;
+/* Styling the jQuery UI auto complete box */
+.ui-autocomplete {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
+/* Box styling for search results */
 .box {
     background-color: rgb(51, 61, 60);
     color: white;
@@ -37,6 +64,21 @@ a {
     max-width: 45rem;
 }
 
+.char-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.justify-evenly {
+    justify-content: space-evenly;
+}
+
+.margin {
+    margin: 24px;
+}
+
+/* Giphy image element styling to override default flex and size properties */
 .img-flex {
     flex: 1 1 0;
     width: 30rem;
@@ -52,14 +94,15 @@ a {
     border: none;
 }
 
+/* Container styling */
 .container {
     background: rgb(51, 61, 60);
     border-radius: 5px;
     padding: 20px;
     color: white;
-
 }
 
+/* Custom column styling instead of using Bulma default column styles */
 .column-custom{
     display: flex;
     justify-content: center;
@@ -67,54 +110,9 @@ a {
     padding: 0.75rem;
 }
 
-.justify-evenly {
-    justify-content: space-evenly;
-}
-
-.margin {
-    margin: 24px;
-}
-
-#fav-button {
-    border: none;
-    margin: 0;
-    padding: 0;
-    background: transparent;
-}
-
-#fav-button img {
-    height:40px;
-    width:auto;
-}
-
-strong {
-    color: gold;
-}
-
-.ui-autocomplete {
-    max-height: 300px;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.char-flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.navbar-end {
-    padding: 0px 30px 0px 0px;
-}
-
+/* Hover styling for anchor link and card elements */
 a:hover {
     color: #fe9d00;
-}
-
-#fav-button:hover {
-    cursor: pointer;
-    transform: scale(1.1);
-    transition:all .5s ease-in-out;
 }
 
 .card:hover {
@@ -122,14 +120,7 @@ a:hover {
     transition:all .5s ease-in-out;
 }
 
-@media screen and (min-width: 769px){
-    .modal-card, .modal-content {
-        margin: 0 auto;
-        max-height: calc(100vh - 40px);
-        width: auto;
-    }
-}
-
+/* Custom Modal styling */
 .message.is-info .message-header {
     background-color: rgb(51, 61, 60);
 }
@@ -143,11 +134,30 @@ a:hover {
     color:white;
 }
 
-.navbar-burger {
-    color: #4a4a4a;
+/* Styling for the favorite character button */
+#fav-button {
+    border: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+#fav-button img {
+    height:40px;
+    width:auto;
+}
+
+#fav-button:hover {
     cursor: pointer;
-    position: relative;
-    width: 3.25rem;
-    margin-left: auto;
-    height: auto;
+    transform: scale(1.1);
+    transition:all .5s ease-in-out;
+}
+
+/* Media query to handle modal sizing on mobile devices */
+@media screen and (min-width: 769px){
+    .modal-card, .modal-content {
+        margin: 0 auto;
+        max-height: calc(100vh - 40px);
+        width: auto;
+    }
 }

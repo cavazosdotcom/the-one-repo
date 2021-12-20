@@ -1,119 +1,111 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The One Fansite to Rule them All</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="./assets/css/style.css">
-</head>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The One Fansite to Rule them All</title>
+    <!-- Bulma, jqueryUI, and custom stylesheet links -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <!-- Favicon link -->
+    <link rel="shortcut icon" type="image/jpg" href="./assets/images/favicon.ico"/>
+  </head>
 
-<body>
-  <header>
-    <!-- possible shadow in nav tag "has-shadow" -->
-    <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-        <img src="assets/images/1467678745c3442eb98440d4521b790e6a1edc99c2.png" width= "182pxl" height="22.5pxl">
-        </a>
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-      <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-start">
+  <body>
+    <!-- Header/Navbar elements -->
+    <header>
+      <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <!-- Navbar logo element -->
+          <img src="assets/images/1467678745c3442eb98440d4521b790e6a1edc99c2.png" width= "182pxl" height="22.5pxl">
+          <!-- Navbar burger menu elements will be shown on mobile devices -->
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
         </div>
-        <div class="navbar-end">
-          <div class="navbar-end">
-            <a href="" class="navbar-item">
-              Home
-            </a>
-            <a href="about.html" class="navbar-item">
-              About Us
-            </a>        
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-start">
           </div>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <main>
-    <section class="section">
-      <div class="container column is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
-
-        <form id="search-input">
-          <div class="field">
-            <label class="label">Search favorite character name</label>
-            <div class="control">
-              <input id="search-value" class="input" type="text" placeholder="Text input" />
+          <div class="navbar-end">
+            <div class="navbar-end">
+              <!-- Navigational links within site -->
+              <a href="" class="navbar-item">
+                Home
+              </a>
+              <a href="about.html" class="navbar-item">
+                About Us
+              </a>        
             </div>
           </div>
-
-          <!-- Local Storage "favorite" character picker -->
-          <div class="field">
-            <label class="label">Saved favorite character list</label>
-            <div class="control">
-              <div class="select is hovered is-danger">
-                <select id="favorite-value">
-                  <!-- Favorite character options go here -->
-                </select>
+        </div>
+      </nav>
+    </header>
+    <!-- Main content elements -->
+    <main>
+      <section class="section">
+        <div class="container column is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
+          <!-- Search Form elements -->
+          <form id="search-input">
+            <div class="field">
+              <label class="label">Search favorite character name</label>
+              <div class="control">
+                <input id="search-value" class="input" type="text" placeholder="" />
               </div>
             </div>
-          </div>
 
-
-          <div class="field is-grouped">
-            <div class="control">
-              <!-- <button class="button is-link" onclick="TestsFunction()">Submit</button> -->
-              <button class="button is-danger is-focus">Search</button>
+            <!-- Local Storage "favorite" character picker -->
+            <div class="field">
+              <label class="label">Saved favorite character list</label>
+              <div class="control">
+                <div class="select is hovered is-danger">
+                  <select id="favorite-value">
+                    <!-- Favorite character options go here -->
+                  </select>
+                </div>
+              </div>
             </div>
-          </div>
-        </form>
+            
+            <!-- Search Button -->
+            <div class="field is-grouped">
+              <div class="control">
+                <button class="button is-danger is-focus">Search</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+      <!-- Media display container -->
+      <div class="columns justify-evenly margin">
+        <div class="column-custom" id="giphy">
+          <!-- Giphy gif goes here -->
+        </div>
 
+        <div class="column-custom" id="character-text">
+          <!-- Character Data goes here -->
+        </div>
       </div>
-    </section>
-    <!--media display box-->
 
-    <!-- <div class="columns justify-evenly margin" id="TestsDiv" style="display:none"> -->
-    <div class="columns justify-evenly margin">
+      <!-- This modal will contain any user input/request errors -->
+      <div id="error-modal" data-target="error" class="modal">
+        <div class="modal-background"></div>
+        <div id="error-modal-content" class="modal-content"></div>
+      </div>
 
-      <div class="column-custom" id="giphy"></div>
-      
-      <div class="column-custom" id="character-text"></div>
-
-    </div>
-
-
-    <!-- <div class="box">
-          <article class="media">
-            <div>
-              <figure id="giphy">
-                <img src="https://media3.giphy.com/media/pzqEdzCFRgGI0/giphy.gif?cid=ecf05e47cyz6invjxzjof944zhkt1d83cpndxfz495b71z3e&rid=giphy.gif&ct=g" alt="gif">
-              </figure>
-            </div>
-            <div class="media-content">
-              <div class="content">
-                <p id="character-text">
-                  <strong>Random character</strong> <small></small> <small></small>
-                  <br>
-                  Click 'submit' to see a quote from your favorite character!
-                </p>
-            </div> -->
-    <div id="error-modal" data-target="error" class="modal">
-      <div class="modal-background"></div>
-      <div id="error-modal-content" class="modal-content"></div>
-    </div>
-    <div id="search-result-modal" data-target="search-result" class="modal">
-      <div class="modal-background"></div>
-      <div id="search-modal-content" class="modal-content"></div>
-    </div>
-  </main>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
-  <script src="./assets/js/char-fill.js"></script>
-  <script src="./assets/js/script.js"></script>
-</body>
+      <!-- This modal will contain results when multiple characters are returned for a search query -->
+      <div id="search-result-modal" data-target="search-result" class="modal">
+        <div class="modal-background"></div>
+        <div id="search-modal-content" class="modal-content"></div>
+      </div>
+    </main>
+    <!-- jQuery, jQueryUI, and javascript file links  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    <script src="./assets/js/char-fill.js"></script>
+    <script src="./assets/js/script.js"></script>
+  </body>
 
 </html>
