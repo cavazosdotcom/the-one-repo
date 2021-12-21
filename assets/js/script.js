@@ -66,14 +66,19 @@ function getCharacterData( searchVal , input ) {
         if ( response.ok ) {
             return response.json()
         .then( function( data ){
-            // If only one character is returned, go fetch giphy gif and character quotes.
-            if ( data.docs.length === 1 ) {
-                getGiphy( data.docs[0].name );
-                getCharacterQuotes( data.docs[0] );
-            } else if (data.docs.length > 1) {
-                // If more than one character is returned, render multiple results modal and store character data temporarily in an object for later use.
-                renderMultiResultsModal( data );
-                tempCharData = data;
+            // If condition will check to make sure that at least one character was returned, if 0 characters were returned an error will be displayed.
+            if ( data.total > 0 ) {
+                // If only one character is returned, go fetch giphy gif and character quotes.
+                if ( data.docs.length === 1 ) {
+                    getGiphy( data.docs[0].name );
+                    getCharacterQuotes( data.docs[0] );
+                } else if (data.docs.length > 1) {
+                    // If more than one character is returned, render multiple results modal and store character data temporarily in an object for later use.
+                    renderMultiResultsModal( data );
+                    tempCharData = data;
+                }
+            } else {
+                throw Error( response.status + ": We were not able to locate the character you searched for." );
             }
         })
         } else {
@@ -140,7 +145,7 @@ function getGiphy( searchVal ) {
             renderGiphy( giphyLink, giphyTitle );
         });
         } else {
-            throw Error( response.statusText + ". We were not able to locate the character you searched for." );
+            throw Error( response.statusText + ". We were not able to locate a gif for the character you searched for." );
         }
         })
         .catch( function( Error ) {
