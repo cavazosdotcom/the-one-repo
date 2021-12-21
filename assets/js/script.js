@@ -206,6 +206,7 @@ function toggleFavoriteCharacter( event ) {
     // Toggles the favorite button icon
     favButtonToggle( event );
     
+
     var storedCharacterData = {
         id: event.target.dataset.id,
         name: event.target.dataset.charname
@@ -257,7 +258,7 @@ function renderFavorites( favorites ) {
 function renderCharacterData ( charData , quoteData ) {
 
     // Determines whether the character we are rendering is a favorite or non-favorite character.
-    favFileFinder( favoriteCharacterList , charData.name );
+    favFileFinder( favoriteCharacterList , charData._id );
     
     /*
     // Logic to determine a random quote.
@@ -370,9 +371,9 @@ function favButtonToggle( event ) {
 };
 
 // Function to determine to display fav.png or not-fav.png icon for the favorite button.
-function favFileFinder( favList, characterName ) {
+function favFileFinder( favList, id ) {
     for ( let i=0; i < favList.length; i++ ) {
-        if ( favList[i] === characterName ) {
+        if ( favList[i].id === id ) {
             favFilePath = "fav.png";
             return favFilePath;
         } else {
