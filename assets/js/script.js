@@ -206,7 +206,10 @@ function toggleFavoriteCharacter( event ) {
     // Toggles the favorite button icon
     favButtonToggle( event );
     
-    var characterName = event.target.dataset.charname;
+    var storedCharacterData = {
+        id: event.target.dataset.id,
+        name: event.target.dataset.charname
+    };
 
     /*
     // For loop to check if character is already on favorites list.
@@ -214,7 +217,7 @@ function toggleFavoriteCharacter( event ) {
     // Then re-render the favorite character list. 
     */
     for ( let i=0; i < favoriteCharacterList.length; i++ ) {
-        if ( favoriteCharacterList[i] === characterName ) {
+        if ( favoriteCharacterList[i].id === storedCharacterData.id ) {
             favoriteCharacterList.splice( i , 1 );
             localStorage.setItem( "favoriteCharacters" , JSON.stringify( favoriteCharacterList ));
             favoriteInputEl.val("");
@@ -223,7 +226,7 @@ function toggleFavoriteCharacter( event ) {
     };
 
     // If character name is not already saved to favorite character list, add it to array.
-    favoriteCharacterList = favoriteCharacterList.concat( characterName );
+    favoriteCharacterList = favoriteCharacterList.concat( storedCharacterData );
 
     // Saving the updated favorite character array to local storage.
     localStorage.setItem( "favoriteCharacters" , JSON.stringify( favoriteCharacterList ));
@@ -242,7 +245,7 @@ function renderFavorites( favorites ) {
     //Template literal which will print out a favorite character option for each character saved within the localstorage array.
     for ( let i=0; i < favoriteCharacterList.length; i++ ) {
         htmlTemplateString += `
-            <option>${favorites[i]}</option>
+            <option data-id="${favorites[i].id}">${favorites[i].name}</option>
         `; 
     };
 
@@ -310,7 +313,7 @@ function renderCharacterData ( charData , quoteData ) {
                 </div>
                 <div class="">
                     <button id="fav-button">
-                        <img src="./assets/images/${favFilePath}" data-charname="${charData.name}">
+                        <img src="./assets/images/${favFilePath}" data-charname="${charData.name}" data-id="${charData._id}">
                     </button>
                 </div>
             </div>         
