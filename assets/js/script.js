@@ -48,7 +48,7 @@ function getCharacterData( searchVal , input ) {
     // If searching from text input form, look them up by name value in regex query string.
     */
     if (input === "favs" ) {
-        var requestUrl = `https://the-one-api.dev/v2/character/${searchVal}/`
+        var requestUrl = `https://the-one-api.dev/v2/character/${searchVal}/`;
     } else if (input === "text" ) { 
         var requestUrl = `https://the-one-api.dev/v2/character?name=/${searchVal}/i`;
     }
