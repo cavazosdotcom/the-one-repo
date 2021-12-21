@@ -18,19 +18,20 @@ function formSubmit( event ){
     /*
     // Conditional logic to determine which search value we are fetching character data from.
     // If both search input and favorite character input is blank, render modal informing user.
-    // If only search input is blank, use favorite character selection.
+    // If only search input is blank, use the selected favorite character's id.
     // If favorite character input is blank, use search input value.
     // If both search input and favorite character input are have values, use the search input value.
+    // The second argument in the getCharacterData function will help determine the API endpoint we will be requesting data from.
     */
     if ( searchInputEl.val() === "" && favoriteInputEl.val() === null ) {
         return renderErrorModal( "Please enter a character name." , "is-info" );
     } else if ( searchInputEl.val() === "" ) {
-        getCharacterData( favoriteInputEl.val() );
+        getCharacterData( $( '#favorite-value option:selected' ).data('id') , "favs" );
     } else if ( favoriteInputEl.val() === "" ) {
-        getCharacterData( searchInputEl.val().trim() );
+        getCharacterData( searchInputEl.val().trim() , "text" );
         favoriteInputEl.val( "" );
     } else {
-        getCharacterData( searchInputEl.val().trim() );
+        getCharacterData( searchInputEl.val().trim() , "text" );
         favoriteInputEl.val( "" );
     };
 
@@ -39,10 +40,19 @@ function formSubmit( event ){
 };
 
 // Fetch Character data from Lord of the Rings character endpoint based off search value.
-function getCharacterData( searchVal ) {
+function getCharacterData( searchVal , input ) {
 
-    // API Request URL and Bearer token.
-    var requestUrl = `https://the-one-api.dev/v2/character?name=/${searchVal}/i`;
+    /*
+    // Conditional logic to determine API Request url.
+    // If searching a favorite character drop down list, look up character by ID.
+    // If searching from text input form, look them up by name value in regex query string.
+    */
+    if (input === "favs" ) {
+        var requestUrl = `https://the-one-api.dev/v2/character/${searchVal}/`;
+    } else if (input === "text" ) { 
+        var requestUrl = `https://the-one-api.dev/v2/character?name=/${searchVal}/i`;
+    }
+    // API Bearer token.
     var bearer = 'Bearer ' + lotrApiKey;
     
     // Fetch request.
@@ -56,14 +66,19 @@ function getCharacterData( searchVal ) {
         if ( response.ok ) {
             return response.json()
         .then( function( data ){
-            // If only one character is returned, go fetch giphy gif and character quotes.
-            if ( data.docs.length === 1 ) {
-                getGiphy( data.docs[0].name );
-                getCharacterQuotes( data.docs[0] );
-            } else if (data.docs.length > 1) {
-                // If more than one character is returned, render multiple results modal and store character data temporarily in an object for later use.
-                renderMultiResultsModal( data );
-                tempCharData = data;
+            // If condition will check to make sure that at least one character was returned, if 0 characters were returned an error will be displayed.
+            if ( data.total > 0 ) {
+                // If only one character is returned, go fetch giphy gif and character quotes.
+                if ( data.docs.length === 1 ) {
+                    getGiphy( data.docs[0].name );
+                    getCharacterQuotes( data.docs[0] );
+                } else if (data.docs.length > 1) {
+                    // If more than one character is returned, render multiple results modal and store character data temporarily in an object for later use.
+                    renderMultiResultsModal( data );
+                    tempCharData = data;
+                }
+            } else {
+                throw Error( response.status + ": We were not able to locate the character you searched for." );
             }
         })
         } else {
@@ -130,7 +145,7 @@ function getGiphy( searchVal ) {
             renderGiphy( giphyLink, giphyTitle );
         });
         } else {
-            throw Error( response.statusText + ". We were not able to locate the character you searched for." );
+            throw Error( response.statusText + ". We were not able to locate a gif for the character you searched for." );
         }
         })
         .catch( function( Error ) {
@@ -206,7 +221,11 @@ function toggleFavoriteCharacter( event ) {
     // Toggles the favorite button icon
     favButtonToggle( event );
     
-    var characterName = event.target.dataset.charname;
+    // Storing each unique character's id, and character name in object to be stored in local storage.
+    var storedCharacterData = {
+        id: event.target.dataset.id,
+        name: event.target.dataset.charname
+    };
 
     /*
     // For loop to check if character is already on favorites list.
@@ -214,7 +233,7 @@ function toggleFavoriteCharacter( event ) {
     // Then re-render the favorite character list. 
     */
     for ( let i=0; i < favoriteCharacterList.length; i++ ) {
-        if ( favoriteCharacterList[i] === characterName ) {
+        if ( favoriteCharacterList[i].id === storedCharacterData.id ) {
             favoriteCharacterList.splice( i , 1 );
             localStorage.setItem( "favoriteCharacters" , JSON.stringify( favoriteCharacterList ));
             favoriteInputEl.val("");
@@ -222,8 +241,8 @@ function toggleFavoriteCharacter( event ) {
         };
     };
 
-    // If character name is not already saved to favorite character list, add it to array.
-    favoriteCharacterList = favoriteCharacterList.concat( characterName );
+    // If character is not already saved to favorite character list, add the character data object to favorite character list array.
+    favoriteCharacterList = favoriteCharacterList.concat( storedCharacterData );
 
     // Saving the updated favorite character array to local storage.
     localStorage.setItem( "favoriteCharacters" , JSON.stringify( favoriteCharacterList ));
@@ -242,7 +261,7 @@ function renderFavorites( favorites ) {
     //Template literal which will print out a favorite character option for each character saved within the localstorage array.
     for ( let i=0; i < favoriteCharacterList.length; i++ ) {
         htmlTemplateString += `
-            <option>${favorites[i]}</option>
+            <option data-id="${favorites[i].id}">${favorites[i].name}</option>
         `; 
     };
 
@@ -254,7 +273,7 @@ function renderFavorites( favorites ) {
 function renderCharacterData ( charData , quoteData ) {
 
     // Determines whether the character we are rendering is a favorite or non-favorite character.
-    favFileFinder( favoriteCharacterList , charData.name );
+    favFileFinder( favoriteCharacterList , charData._id );
     
     /*
     // Logic to determine a random quote.
@@ -310,7 +329,7 @@ function renderCharacterData ( charData , quoteData ) {
                 </div>
                 <div class="">
                     <button id="fav-button">
-                        <img src="./assets/images/${favFilePath}" data-charname="${charData.name}">
+                        <img src="./assets/images/${favFilePath}" data-charname="${charData.name}" data-id="${charData._id}">
                     </button>
                 </div>
             </div>         
@@ -367,9 +386,9 @@ function favButtonToggle( event ) {
 };
 
 // Function to determine to display fav.png or not-fav.png icon for the favorite button.
-function favFileFinder( favList, characterName ) {
+function favFileFinder( favList, id ) {
     for ( let i=0; i < favList.length; i++ ) {
-        if ( favList[i] === characterName ) {
+        if ( favList[i].id === id ) {
             favFilePath = "fav.png";
             return favFilePath;
         } else {

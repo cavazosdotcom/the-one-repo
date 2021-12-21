@@ -3,7 +3,6 @@
 The one repo to rule them all! We created an interactive webpage that gives our user, any Lord of the Rings fan, a way to enjoy the world of Middle-Earth like no way before. Our page let's the user search for their favorite character from a list derived from "The One API", which is a third-party web API stored with data about every character in the LOTR trilogy. Upon search, the user is treated with fun facts about that character and a complimentary random gif that comes about from the "Giphy.API", another third-party web api. Our user should be able to save any characters they like to search often, into a favorites list that is stored in their local storage. Our page is the perfect place for any fan of LOTR to prepare for their annual movie marathon.
 
 ## Contributors
----------------
 
 - [Chris Kimball](https://github.com/chriskimball)
 - [Jose Quintero](https://github.com/Tero15)
