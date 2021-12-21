@@ -18,19 +18,20 @@ function formSubmit( event ){
     /*
     // Conditional logic to determine which search value we are fetching character data from.
     // If both search input and favorite character input is blank, render modal informing user.
-    // If only search input is blank, use favorite character selection.
+    // If only search input is blank, use the selected favorite character's id.
     // If favorite character input is blank, use search input value.
     // If both search input and favorite character input are have values, use the search input value.
+    // The second argument in the getCharacterData function will help determine the API endpoint we will be requesting data from.
     */
     if ( searchInputEl.val() === "" && favoriteInputEl.val() === null ) {
         return renderErrorModal( "Please enter a character name." , "is-info" );
     } else if ( searchInputEl.val() === "" ) {
-        getCharacterData( favoriteInputEl.val() );
+        getCharacterData( $( '#favorite-value option:selected' ).data('id') , "favs" );
     } else if ( favoriteInputEl.val() === "" ) {
-        getCharacterData( searchInputEl.val().trim() );
+        getCharacterData( searchInputEl.val().trim() , "text" );
         favoriteInputEl.val( "" );
     } else {
-        getCharacterData( searchInputEl.val().trim() );
+        getCharacterData( searchInputEl.val().trim() , "text" );
         favoriteInputEl.val( "" );
     };
 
@@ -39,10 +40,19 @@ function formSubmit( event ){
 };
 
 // Fetch Character data from Lord of the Rings character endpoint based off search value.
-function getCharacterData( searchVal ) {
+function getCharacterData( searchVal , input ) {
 
-    // API Request URL and Bearer token.
-    var requestUrl = `https://the-one-api.dev/v2/character?name=/${searchVal}/i`;
+    /*
+    // Conditional logic to determine API Request url.
+    // If searching a favorite character drop down list, look up character by ID.
+    // If searching from text input form, look them up by name value in regex query string.
+    */
+    if (input === "favs" ) {
+        var requestUrl = `https://the-one-api.dev/v2/character/${searchVal}/`
+    } else if (input === "text" ) { 
+        var requestUrl = `https://the-one-api.dev/v2/character?name=/${searchVal}/i`;
+    }
+    // API Bearer token.
     var bearer = 'Bearer ' + lotrApiKey;
     
     // Fetch request.
@@ -206,7 +216,7 @@ function toggleFavoriteCharacter( event ) {
     // Toggles the favorite button icon
     favButtonToggle( event );
     
-
+    // Storing each unique character's id, and character name in object to be stored in local storage.
     var storedCharacterData = {
         id: event.target.dataset.id,
         name: event.target.dataset.charname
@@ -226,7 +236,7 @@ function toggleFavoriteCharacter( event ) {
         };
     };
 
-    // If character name is not already saved to favorite character list, add it to array.
+    // If character is not already saved to favorite character list, add the character data object to favorite character list array.
     favoriteCharacterList = favoriteCharacterList.concat( storedCharacterData );
 
     // Saving the updated favorite character array to local storage.
